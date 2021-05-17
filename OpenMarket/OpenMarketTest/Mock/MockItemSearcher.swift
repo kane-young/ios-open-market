@@ -13,7 +13,7 @@ class MockItemSearcher {
   var shouldReturnError = false
   var searchWasCalled = false
   var sut_item: ProductSearchResponse? = nil
-  
+
   init() {
     guard let itemAsset = NSDataAsset.init(name: "Item") else {
       XCTFail()
@@ -31,7 +31,7 @@ class MockItemSearcher {
 extension MockItemSearcher: ItemSearcherProtocol {
   func search(id: Int, completionHandler: @escaping (ProductSearchResponse?) -> ()) {
     searchWasCalled = true
-    
+
     if shouldReturnError {
       completionHandler(nil)
       XCTFail()

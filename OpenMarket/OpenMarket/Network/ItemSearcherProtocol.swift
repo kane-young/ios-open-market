@@ -7,6 +7,7 @@
 
 import Foundation
 
-protocol ItemSearcherProtocol {
-  func search(id: Int, completionHandler: @escaping (ProductSearchResponse?) -> ())
+protocol URLSessionProtocol {
+  func dataTask(with request: URLRequest,
+                completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
 }
