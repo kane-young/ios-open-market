@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductUpdateRequest: Editable {    
+struct ProductUpdateRequest: Encodable {    
   let title: String?
   let description: String?
   let price: Int?

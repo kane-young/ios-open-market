@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ProductDeleteRequest: Authenticatable {
+struct ProductDeleteRequest: Encodable {
   let password: String
 }

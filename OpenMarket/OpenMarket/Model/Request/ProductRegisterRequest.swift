@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductRegisterRequest: Registratable {
+struct ProductRegisterRequest: Encodable {
   let title: String
   let description: String
   let price: Int
