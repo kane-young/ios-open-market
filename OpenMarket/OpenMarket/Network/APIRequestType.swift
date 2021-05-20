@@ -8,15 +8,14 @@
 import Foundation
 
 enum APIRequestType {
-  static let baseURL: String = "https://camp-open-market-2.herokuapp.com"
-
   case loadPage(page: Int)
   case loadProduct(id: Int)
   case postProduct
   case patchProduct(id: Int)
   case deleteProduct(id: Int)
-
-  var urlPath: String {
+  
+  static let baseURL: String = "https://camp-open-market-2.herokuapp.com"
+  private var urlPath: String {
     switch self {
     case .loadPage(let page):
       return "/items/\(page)"
