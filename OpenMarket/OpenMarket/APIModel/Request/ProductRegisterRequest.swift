@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct ProductRegisterRequest: Encodable {
+protocol MultiPartProtocol: Encodable {
+  var parameters: [String: Any?] { get }
+}
+
+struct ProductRegisterRequest {
   let title: String
   let description: String
   let price: Int
@@ -16,9 +20,22 @@ struct ProductRegisterRequest: Encodable {
   let discountedPrice: Int?
   let images: [Data]
   let password: String
-  
+}
+
+extension ProductRegisterRequest: MultiPartProtocol {
   private enum CodingKeys: String, CodingKey {
     case title, description, price, currency, stock, images, password
     case discountedPrice = "discounted_price"
+  }
+  
+  var parameters: [String: Any?] {
+    ["title":title,
+     "description":description,
+     "price":price,
+     "currency":currency,
+     "stock":stock,
+     "discounted_price":discountedPrice,
+     "images":images,
+     "paswword":password]
   }
 }
