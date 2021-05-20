@@ -12,3 +12,5 @@ protocol URLSessionProtocol {
 }
 
 extension URLSession: URLSessionProtocol { }
+
+//삭제 대기 : URLSessionProtocol 버리고 URLProtocol을 활용해서 네트워크 과정을 가정하고 Test해보자

@@ -23,7 +23,7 @@ struct ProductUpdateRequest: Encodable {
   }
 }
 
-extension ProductUpdateRequest: MultiPartProtocol {
+extension ProductUpdateRequest: Uploadable {
   var parameters: [String: Any?] {
     ["title":title,
      "description":description,
