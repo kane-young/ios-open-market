@@ -21,7 +21,7 @@ final class OpenMarketAPIProvider {
         return
       }
       
-      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+      guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
         completionHandler(.failure(.connectionProblem))
         return
       }
