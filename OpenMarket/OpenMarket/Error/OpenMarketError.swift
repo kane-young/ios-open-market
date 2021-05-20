@@ -12,4 +12,5 @@ enum OpenMarketError: Error {
   case invalidData
   case invalidURL
   case invalidRequest
+  case encodingProblem
 }
