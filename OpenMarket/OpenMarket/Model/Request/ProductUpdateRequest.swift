@@ -22,3 +22,16 @@ struct ProductUpdateRequest: Encodable {
     case discountedPrice = "discounted_price"
   }
 }
+
+extension ProductUpdateRequest: MultiPartProtocol {
+  var parameters: [String: Any?] {
+    ["title":title,
+     "description":description,
+     "price":price,
+     "currency":currency,
+     "stock":stock,
+     "discounted_price":discountedPrice,
+     "images":images,
+     "paswword":password]
+  }
+}
