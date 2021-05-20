@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductSearchResponse: InfoSearchable, Detailable {  
+struct ProductSearchResponse: Decodable {  
   let id: Int
   let title: String
   let description: String

@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct ListSearchResponse: ListSearchable {
+struct ListSearchResponse: Decodable {
   let page: Int
   let items: [Item]
   
-  struct Item: InfoSearchable {
+  struct Item: Decodable {
     let id: Int
     let title: String
     let price: Int

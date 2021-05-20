@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductUpdateRequest: Editable {    
+struct ProductUpdateRequest: Encodable {    
   let title: String?
   let description: String?
   let price: Int?
@@ -20,5 +20,18 @@ struct ProductUpdateRequest: Editable {
   private enum CodingKeys: String, CodingKey {
     case title, description, price, currency, stock, images, password
     case discountedPrice = "discounted_price"
+  }
+}
+
+extension ProductUpdateRequest: MultiPartProtocol {
+  var parameters: [String: Any?] {
+    ["title":title,
+     "description":description,
+     "price":price,
+     "currency":currency,
+     "stock":stock,
+     "discounted_price":discountedPrice,
+     "images":images,
+     "paswword":password]
   }
 }

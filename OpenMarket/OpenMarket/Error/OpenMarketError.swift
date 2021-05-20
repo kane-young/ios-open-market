@@ -8,6 +8,8 @@
 import Foundation
 
 enum OpenMarketError: Error {
-  case invalidSearchResult
-  case decodingProblem
+  case connectionProblem
+  case invalidData
+  case invalidURL
+  case invalidRequest
 }
