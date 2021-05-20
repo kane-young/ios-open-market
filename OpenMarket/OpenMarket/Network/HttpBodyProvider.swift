@@ -41,13 +41,13 @@ struct HttpBodyProvider {
       completionHandler(.failure(.invalidRequest))
     }
     
-    do {
-      encodedData = try encode(data: product)
-      urlRequest!.httpBody = encodedData
-      completionHandler(.success(urlRequest!))
-    } catch {
-      completionHandler(.failure(.encodingProblem))
-    }
+//    do {
+//      encodedData = try encode(data: product)
+//      urlRequest!.httpBody = encodedData
+//      completionHandler(.success(urlRequest!))
+//    } catch {
+//      completionHandler(.failure(.encodingProblem))
+//    }
   }
   
   private func makeHttpBody(product: MultiPartProtocol) -> Data {
