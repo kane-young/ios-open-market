@@ -9,6 +9,7 @@ import Foundation
 
 enum OpenMarketError: Error {
   case connectionProblem
+  case decodingProblem
   case invalidData
   case invalidURL
   case invalidRequest
