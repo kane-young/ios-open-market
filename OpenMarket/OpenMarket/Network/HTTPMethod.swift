@@ -25,7 +25,7 @@ enum HTTPMethod: CustomStringConvertible {
     }
   }
   
-  static let contentType = "Context-Type"
+  static let contentType = "Content-Type"
   
   func makeHeaderContextType(boundary: String) -> String {
     switch self {
