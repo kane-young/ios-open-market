@@ -15,6 +15,8 @@
 		C32694EE265651E1005132F2 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694ED265651E1005132F2 /* DataExtension.swift */; };
 		C32694F026565C46005132F2 /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694EF26565C46005132F2 /* URLRequestManager.swift */; };
 		C32694F326568386005132F2 /* MultiPartProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694F226568386005132F2 /* MultiPartProtocol.swift */; };
+		C3269506265780DE005132F2 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3269504265780CD005132F2 /* MockURLProtocol.swift */; };
+		C32695082657AE4B005132F2 /* OpenMarketAPIProviderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32695072657AE4B005132F2 /* OpenMarketAPIProviderTest.swift */; };
 		C37ABCB3264EAC57004AFA5C /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37ABCB2264EAC57004AFA5C /* TestError.swift */; };
 		C39DA42B264D47C0001F1B33 /* ProductRegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39DA42A264D47C0001F1B33 /* ProductRegisterRequest.swift */; };
 		C39DA42F264D495B001F1B33 /* ProductSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39DA42E264D495B001F1B33 /* ProductSearchResponse.swift */; };
@@ -54,6 +56,8 @@
 		C32694ED265651E1005132F2 /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
 		C32694EF26565C46005132F2 /* URLRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestManager.swift; sourceTree = "<group>"; };
 		C32694F226568386005132F2 /* MultiPartProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPartProtocol.swift; sourceTree = "<group>"; };
+		C3269504265780CD005132F2 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		C32695072657AE4B005132F2 /* OpenMarketAPIProviderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMarketAPIProviderTest.swift; sourceTree = "<group>"; };
 		C37ABCB2264EAC57004AFA5C /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
 		C39DA42A264D47C0001F1B33 /* ProductRegisterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRegisterRequest.swift; sourceTree = "<group>"; };
 		C39DA42E264D495B001F1B33 /* ProductSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSearchResponse.swift; sourceTree = "<group>"; };
@@ -90,6 +94,8 @@
 		850A46FF264E33B5006DC488 /* OpenMarketTest */ = {
 			isa = PBXGroup;
 			children = (
+				C32695072657AE4B005132F2 /* OpenMarketAPIProviderTest.swift */,
+				C3269504265780CD005132F2 /* MockURLProtocol.swift */,
 				850A4702264E33B5006DC488 /* Info.plist */,
 				C37ABCB2264EAC57004AFA5C /* TestError.swift */,
 			);
@@ -296,10 +302,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3269506265780DE005132F2 /* MockURLProtocol.swift in Sources */,
 				C39DA44E264E5032001F1B33 /* ProductSearchResponse.swift in Sources */,
 				C39DA459264E5047001F1B33 /* ProductUpdateRequest.swift in Sources */,
 				C39DA457264E5047001F1B33 /* ProductRegisterRequest.swift in Sources */,
 				C39DA458264E5047001F1B33 /* ProductDeleteRequest.swift in Sources */,
+				C32695082657AE4B005132F2 /* OpenMarketAPIProviderTest.swift in Sources */,
 				C37ABCB3264EAC57004AFA5C /* TestError.swift in Sources */,
 				C39DA44C264E502B001F1B33 /* ListSearchResponse.swift in Sources */,
 			);
