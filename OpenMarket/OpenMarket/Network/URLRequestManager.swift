@@ -7,13 +7,11 @@
 
 import Foundation
 
-
-//Body를 조립하고 , Request를 생성해줄 수 있는 func
 protocol URLRequestProtocol: MultiPartProtocol {
   static var boundary: String { get }
-  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: RequestType) throws -> URLRequest
-  func makeHttpBody(product: MultiPartProtocol) -> Data {
-  func encode(data: ProductDeleteRequest, completionHandler: @escaping (Result<Data, OpenMarketError>) -> ())
+  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: RequestType) -> URLRequest?
+  func setMultiPartBody(httpMethod: HttpMethod, apiRequestType: RequestType, product: Uploadable) -> URLRequest?
+  func setJsonBody(httpMethod: HttpMethod, apiRequestType: RequestType, product: ProductDeleteRequest) -> URLRequest?
 }
 
 extension URLRequestProtocol {
@@ -21,11 +19,8 @@ extension URLRequestProtocol {
     return UUID().uuidString
   }
   
-  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: RequestType) throws -> URLRequest {
-    guard let url = apiRequestType.url else {
-      throw OpenMarketError.invalidURL
-    }
-    
+  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: RequestType) -> URLRequest? {
+    guard let url = apiRequestType.url else { return nil }
     var urlRequest = URLRequest(url: url)
     let contentType = httpMethod.makeContentTypeText(boundary: Self.boundary)
     
@@ -35,29 +30,28 @@ extension URLRequestProtocol {
     return urlRequest
   }
   
-  // Multipart form 에 대한 Body 생성
-  private func makeHttpBody(product: MultiPartProtocol) -> Data {
+  func setMultiPartBody(httpMethod: HttpMethod, apiRequestType: RequestType, product: Uploadable) -> URLRequest? {
+    guard var urlRequest = makeURLRequest(httpMethod: httpMethod, apiRequestType: apiRequestType) else { return nil }
     var data: Data = Data()
     
     product.parameters.forEach { key, value in
       if let images = value as? [Data] {
-        data.append(makeBodyForImage(parameter: key, images: images))
+        data.append(makeBodyForImage(boundary:Self.boundary, parameter: key, images: images))
       } else if let value = value {
-        data.append(makeBodyForNormal(parameter: key, value: value))
+        data.append(makeBodyForNormal(boundary:Self.boundary, parameter: key, value: value))
       }
     }
     
-    data.appendString("--\(URLRequestManager.boundary)--\r\n")
-    return data
+    data.appendString("--\(Self.boundary)--\r\n")
+    urlRequest.httpBody = data
+    return urlRequest
   }
   
-  // Json파일 형태에 대해 Encode 하고 Body 생성
-  private func encode(data: ProductDeleteRequest, completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-    do {
-      let encodedData = try JSONEncoder().encode(data)
-      completionHandler(.success(encodedData))
-    } catch {
-      completionHandler(.failure(.encodingProblem))
-    }
+  func setJsonBody(httpMethod: HttpMethod, apiRequestType: RequestType, product: ProductDeleteRequest) -> URLRequest? {
+    guard var urlRequest = makeURLRequest(httpMethod: httpMethod, apiRequestType: apiRequestType) else { return nil }
+    guard let encodedData = try? JSONEncoder().encode(product) else { return nil }
+    
+    urlRequest.httpBody = encodedData
+    return urlRequest
   }
 }

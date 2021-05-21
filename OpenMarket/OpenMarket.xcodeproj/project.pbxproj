@@ -13,7 +13,6 @@
 		C32694E126560A61005132F2 /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694E026560A61005132F2 /* HttpMethod.swift */; };
 		C32694E326561883005132F2 /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694E226561883005132F2 /* URLSessionProtocol.swift */; };
 		C32694E5265618E6005132F2 /* OpenMarketAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694E4265618E6005132F2 /* OpenMarketAPIProvider.swift */; };
-		C32694EB26564CE9005132F2 /* OpenMarketDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694EA26564CE9005132F2 /* OpenMarketDecoder.swift */; };
 		C32694EE265651E1005132F2 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694ED265651E1005132F2 /* DataExtension.swift */; };
 		C32694F026565C46005132F2 /* URLRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694EF26565C46005132F2 /* URLRequestManager.swift */; };
 		C32694F326568386005132F2 /* MultiPartProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32694F226568386005132F2 /* MultiPartProtocol.swift */; };
@@ -54,7 +53,6 @@
 		C32694E026560A61005132F2 /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
 		C32694E226561883005132F2 /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
 		C32694E4265618E6005132F2 /* OpenMarketAPIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMarketAPIProvider.swift; sourceTree = "<group>"; };
-		C32694EA26564CE9005132F2 /* OpenMarketDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMarketDecoder.swift; sourceTree = "<group>"; };
 		C32694ED265651E1005132F2 /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
 		C32694EF26565C46005132F2 /* URLRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestManager.swift; sourceTree = "<group>"; };
 		C32694F226568386005132F2 /* MultiPartProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPartProtocol.swift; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 				C32694E4265618E6005132F2 /* OpenMarketAPIProvider.swift */,
 				C32694EF26565C46005132F2 /* URLRequestManager.swift */,
 				C32694F226568386005132F2 /* MultiPartProtocol.swift */,
-				C32694EA26564CE9005132F2 /* OpenMarketDecoder.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -338,7 +335,6 @@
 				C70FB0FF25BEF61C00C9924E /* ViewController.swift in Sources */,
 				C32694E326561883005132F2 /* URLSessionProtocol.swift in Sources */,
 				C70FB0FB25BEF61C00C9924E /* AppDelegate.swift in Sources */,
-				C32694EB26564CE9005132F2 /* OpenMarketDecoder.swift in Sources */,
 				C70FB0FD25BEF61C00C9924E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

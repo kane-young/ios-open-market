@@ -33,4 +33,19 @@ enum RequestType {
   var url: URL? {
     return URL(string: "\(RequestType.baseURL)\(urlPath)")
   }
+  
+  var httpMethod: HttpMethod {
+    switch self {
+    case .loadPage:
+      return .get
+    case .loadProduct:
+      return .get
+    case .postProduct:
+      return .post
+    case .patchProduct:
+      return .patch
+    case .deleteProduct:
+      return .delete
+    }
+  }
 }
