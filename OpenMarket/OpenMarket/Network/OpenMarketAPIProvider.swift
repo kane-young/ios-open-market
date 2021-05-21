@@ -39,7 +39,7 @@ struct OpenMarketAPIProvider: URLRequestProtocol {
   
   func postProduct(product: ProductRegisterRequest,
                    apiRequestType: RequestType,
-                   completionHandler: @escaping (Result<URLRequest, OpenMarketError>) -> ()) {
+                   completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .post,
                                             apiRequestType: apiRequestType,
                                             product: product) else {
@@ -47,14 +47,14 @@ struct OpenMarketAPIProvider: URLRequestProtocol {
       return
     }
     
-    dataTask(with: urlRequest) { result in
-      completionHandler(.success(urlRequest))
+    dataTask(with: urlRequest) { data in
+      completionHandler(data)
     }
   }
 
   func updateProduct(product: ProductUpdateRequest,
                      apiRequestType: RequestType,
-                     completionHandler: @escaping (Result<URLRequest, OpenMarketError>) -> ()) {
+                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .patch,
                                             apiRequestType: apiRequestType,
                                             product: product) else {
@@ -62,14 +62,14 @@ struct OpenMarketAPIProvider: URLRequestProtocol {
       return
     }
     
-    dataTask(with: urlRequest) { result in
-      completionHandler(.success(urlRequest))
+    dataTask(with: urlRequest) { data in
+      completionHandler(data)
     }
   }
   
   func deleteProduct(product: ProductDeleteRequest,
                      apiRequestType: RequestType,
-                     completionHandler: @escaping (Result<URLRequest, OpenMarketError>) -> ()) {
+                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setJsonBody(httpMethod: .delete,
                                        apiRequestType: apiRequestType,
                                        product: product) else {
@@ -77,21 +77,21 @@ struct OpenMarketAPIProvider: URLRequestProtocol {
       return
     }
     
-    dataTask(with: urlRequest) { result in
-      completionHandler(.success(urlRequest))
+    dataTask(with: urlRequest) { data in
+      completionHandler(data)
     }
   }
 
   func getData(apiRequestType: RequestType,
-               completionHandler: @escaping (Result<URLRequest, OpenMarketError>) -> ()) {
+               completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = makeURLRequest(httpMethod: .get,
                                           apiRequestType: apiRequestType) else {
       completionHandler(.failure(.invalidRequest))
       return
     }
     
-    dataTask(with: urlRequest) { result in
-      completionHandler(.success(urlRequest))
+    dataTask(with: urlRequest) { data in
+      completionHandler(data)
     }
   }
 }
