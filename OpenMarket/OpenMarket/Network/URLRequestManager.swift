@@ -36,9 +36,9 @@ extension URLRequestProtocol {
     
     product.parameters.forEach { key, value in
       if let images = value as? [Data] {
-        data.append(makeBodyForImage(boundary:Self.boundary, parameter: key, images: images))
+        data.append(makeBodyForImage(boundary: Self.boundary, parameter: key, images: images))
       } else if let value = value {
-        data.append(makeBodyForNormal(boundary:Self.boundary, parameter: key, value: value))
+        data.append(makeBodyForNormal(boundary: Self.boundary, parameter: key, value: value))
       }
     }
     

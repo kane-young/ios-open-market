@@ -16,10 +16,10 @@ extension MultiPartProtocol {
   func makeBodyForImage(boundary: String, parameter: String, images: [Data]) -> Data {
     var data = Data()
     var imageIndex = 1
-
+    
     images.forEach { image in
-      data.appendString("--(boundary)\r\n")
-      data.appendString("Content-Disposition: form-data; name=\"\(parameter)\"; filename=\"\(image[imageIndex]).png\"\r\n")
+      data.appendString("--\(boundary)\r\n")
+      data.appendString("Content-Disposition: form-data; name=\"\(parameter)[]\"; filename=\"image\(imageIndex).png\"\r\n")
       data.appendString("Content-Type: image/png\r\n\r\n")
       data.append(image)
       data.appendString("\r\n")
@@ -28,11 +28,11 @@ extension MultiPartProtocol {
 
     return data
   }
-
+  
   func makeBodyForNormal(boundary: String, parameter: String, value: Any?) -> Data {
     var data = Data()
-
-    data.appendString("--(boundary)\r\n")
+            
+    data.appendString("--\(boundary)\r\n")
     data.appendString("Content-Disposition: form-data; name=\"\(parameter)\"\r\n\r\n")
     if let value = value as? Int{
       data.appendString(String(value))
@@ -40,7 +40,8 @@ extension MultiPartProtocol {
       data.appendString(value)
     }
     data.appendString("\r\n")
-
+    
     return data
   }
 }
+

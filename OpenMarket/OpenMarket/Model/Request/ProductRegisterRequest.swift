@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-//Uploadable을 채택한 파일 = multipart-formdata 형식으로 request를 보낼 형태
 protocol Uploadable {
   var parameters: [String: Any?] { get }
 }
