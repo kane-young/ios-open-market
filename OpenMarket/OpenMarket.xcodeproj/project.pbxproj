@@ -90,7 +90,6 @@
 		850A46FF264E33B5006DC488 /* OpenMarketTest */ = {
 			isa = PBXGroup;
 			children = (
-				C37ABCB8264EAFE2004AFA5C /* Mock */,
 				850A4702264E33B5006DC488 /* Info.plist */,
 				C37ABCB2264EAC57004AFA5C /* TestError.swift */,
 			);
@@ -140,13 +139,6 @@
 				C32694F226568386005132F2 /* MultiPartProtocol.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		C37ABCB8264EAFE2004AFA5C /* Mock */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Mock;
 			sourceTree = "<group>";
 		};
 		C39DA43E264D70AE001F1B33 /* Request */ = {

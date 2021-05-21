@@ -8,9 +8,9 @@
 import Foundation
 
 struct OpenMarketAPIProvider: URLRequestProtocol {
-  let session: URLSessionProtocol
+  let session: URLSession
   
-  init(session: URLSessionProtocol = URLSession.shared) {
+  init(session: URLSession = URLSession.shared) {
     self.session = session
   }
   
@@ -37,7 +37,7 @@ struct OpenMarketAPIProvider: URLRequestProtocol {
     }).resume()
   }
   
-  func setPostBody(product: ProductRegisterRequest,
+  func postProduct(product: ProductRegisterRequest,
                    apiRequestType: RequestType,
                    completionHandler: @escaping (Result<URLRequest, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .post,
@@ -52,7 +52,7 @@ struct OpenMarketAPIProvider: URLRequestProtocol {
     }
   }
 
-  func setUpdateBody(product: ProductUpdateRequest,
+  func updateProduct(product: ProductUpdateRequest,
                      apiRequestType: RequestType,
                      completionHandler: @escaping (Result<URLRequest, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .patch,
@@ -67,7 +67,7 @@ struct OpenMarketAPIProvider: URLRequestProtocol {
     }
   }
   
-  func setDeleteBody(product: ProductDeleteRequest,
+  func deleteProduct(product: ProductDeleteRequest,
                      apiRequestType: RequestType,
                      completionHandler: @escaping (Result<URLRequest, OpenMarketError>) -> ()) {
     guard let urlRequest = setJsonBody(httpMethod: .delete,
