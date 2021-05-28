@@ -8,6 +8,8 @@
 import UIKit
 
 class CollectionVC: UIViewController {
+  static let cellIdentifier = "CollectionCell"
+  
   let listViewModel = ListViewModel()
   
   @IBOutlet weak var collectionView: UICollectionView!
@@ -29,12 +31,12 @@ extension CollectionVC: UICollectionViewDataSource, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView,
                       cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell",
+            collectionView.dequeueReusableCell(withReuseIdentifier: CollectionVC.cellIdentifier,
                                                for: indexPath) as? CollectionViewCell else {
       return UICollectionViewCell()
     }
     
-    let listInfo = listViewModel.listItemInfo(at: indexPath.row)
+    let listInfo = listViewModel.itemInfo(at: indexPath.row)
     cell.update(info: listInfo)
     cell.backgroundColor = .lightGray
     

@@ -14,7 +14,7 @@ class ListViewModel {
     return list.count
   }
 
-  func listItemInfo(at index: Int) -> ListItem {
+  func itemInfo(at index: Int) -> ListItem {
     return list[index]
   }
   

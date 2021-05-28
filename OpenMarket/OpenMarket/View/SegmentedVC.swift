@@ -104,6 +104,7 @@ class SegmentedVC: UIViewController {
       remove(asChildViewController: collectionViewController)
       add(asChildViewController: tableViewController)
       
+      tableViewController.listViewModel.update(model: list)
     case .GRID:
       remove(asChildViewController: tableViewController)
       add(asChildViewController: collectionViewController)
