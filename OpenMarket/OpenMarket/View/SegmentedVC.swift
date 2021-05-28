@@ -35,6 +35,20 @@ class SegmentedVC: UIViewController {
   
   // MARK:- Variables
   
+  // dummy
+  private let list: [ListItem] = [
+    ListItem(imageURL: "test", title: "test title1", price: 12345, stock: 678),
+    ListItem(imageURL: "test", title: "test title2", price: 111, stock: 222),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0),
+    ListItem(imageURL: "test", title: "test0", price: 0, stock: 0)
+  ]
+  
   private var tableViewController: TableVC {
     let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
     let viewController = storyboard.instantiateViewController(
@@ -89,9 +103,12 @@ class SegmentedVC: UIViewController {
     case .LIST:
       remove(asChildViewController: collectionViewController)
       add(asChildViewController: tableViewController)
+      
     case .GRID:
       remove(asChildViewController: tableViewController)
       add(asChildViewController: collectionViewController)
+      
+      collectionViewController.listViewModel.update(model: list)
     default:
       break
     }

@@ -7,19 +7,8 @@
 
 import UIKit
 
-class CollectionViewCell: UICollectionViewCell {
-  @IBOutlet weak var imageView: UIImageView!
-  @IBOutlet weak var title: UILabel!
-  @IBOutlet weak var price: UILabel!
-  @IBOutlet weak var stock: UILabel!
-}
-
 class CollectionVC: UIViewController {
-  // dummy
-  let list = [1,2,3,4,5,6,7,8,9,10]
-  let dummyName = ["MacBook Pro", "Mac mini", "test3", "test4" ,"test5", "test6", "test7", "test8", "test9", "test10"]
-  let dummyPrice = ["USD 2,000", "KRW 2,000,000", "123", "123", "123", "123", "123", "123", "123", "123"]
-  let dummyStock = ["잔여수량:148", "품절", "test", "test", "test", "test", "test", "test", "test", "test"]
+  let listViewModel = ListViewModel()
   
   @IBOutlet weak var collectionView: UICollectionView!
   
@@ -28,32 +17,32 @@ class CollectionVC: UIViewController {
     
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
-    
   }
 }
 
 extension CollectionVC: UICollectionViewDataSource, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView,
                       numberOfItemsInSection section: Int) -> Int {
-    return list.count
+    return listViewModel.numOfList
   }
   
   func collectionView(_ collectionView: UICollectionView,
                       cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell",
-                                                  for: indexPath) as! CollectionViewCell
+    guard let cell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell",
+                                               for: indexPath) as? CollectionViewCell else {
+      return UICollectionViewCell()
+    }
+    
+    let listInfo = listViewModel.listItemInfo(at: indexPath.row)
+    cell.update(info: listInfo)
     cell.backgroundColor = .lightGray
-    cell.imageView.image = UIImage(named: "testImage.png")
-    cell.title.text = dummyName[indexPath.row]
-    cell.price.text = dummyPrice[indexPath.row]
-    cell.stock.text = dummyStock[indexPath.row]
-
+    
     return cell
   }
 }
 
 extension CollectionVC: UICollectionViewDelegateFlowLayout {
-  
   // 위 아래 간격
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
@@ -81,5 +70,4 @@ extension CollectionVC: UICollectionViewDelegateFlowLayout {
     let size = CGSize(width: width, height: width)
     return size
   }
-
 }
