@@ -39,10 +39,9 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
   }
   
   func postProduct(product: CreateItem,
-                   apiRequestType: RequestType,
                    completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .post,
-                                            apiRequestType: apiRequestType,
+                                            apiRequestType: .postProduct,
                                             product: product) else {
       completionHandler(.failure(.invalidRequest))
       return
@@ -54,10 +53,10 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
   }
 
   func updateProduct(product: UpdateItem,
-                     apiRequestType: RequestType,
+                     id: Int,
                      completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .patch,
-                                            apiRequestType: apiRequestType,
+                                            apiRequestType: .patchProduct(id: id),
                                             product: product) else {
       completionHandler(.failure(.invalidRequest))
       return
@@ -69,10 +68,10 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
   }
   
   func deleteProduct(product: DeleteItem,
-                     apiRequestType: RequestType,
+                     id: Int,
                      completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setJsonBody(httpMethod: .delete,
-                                       apiRequestType: apiRequestType,
+                                       apiRequestType: .deleteProduct(id: id),
                                        product: product) else {
       completionHandler(.failure(.invalidRequest))
       return
@@ -83,10 +82,10 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
     }
   }
 
-  func getData(apiRequestType: RequestType,
+  func getData(id: Int,
                completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = makeURLRequest(httpMethod: .get,
-                                          apiRequestType: apiRequestType) else {
+                                          apiRequestType: .loadProduct(id: id)) else {
       completionHandler(.failure(.invalidRequest))
       return
     }
@@ -95,4 +94,17 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
       completionHandler(data)
     }
   }
+    
+    func getDatas(page: Int,
+                  completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+        guard let urlRequest = makeURLRequest(httpMethod: .get,
+                                              apiRequestType: .loadPage(page: page)) else {
+            completionHandler(.failure(.invalidRequest))
+            return
+        }
+        
+        dataTask(with: urlRequest) { data in
+            completionHandler(data)
+        }
+    }
 }

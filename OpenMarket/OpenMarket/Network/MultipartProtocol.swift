@@ -20,7 +20,10 @@ extension MultiPartProtocol {
                         apiRequestType: RequestType,
                         product: Encodable) -> URLRequest? {
     guard var urlRequest = makeURLRequest(httpMethod: httpMethod,
-                                          apiRequestType: apiRequestType) else { return nil }
+                                          apiRequestType: apiRequestType) else {
+        return nil
+    }
+    
     var data: Data = Data()
     let mirror = Mirror(reflecting: product)
     

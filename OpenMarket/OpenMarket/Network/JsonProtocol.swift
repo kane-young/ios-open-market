@@ -14,10 +14,13 @@ protocol JsonProtocol: URLRequestProtocol {
 }
 
 extension JsonProtocol {
-  func setJsonBody<T:Encodable>(httpMethod: HttpMethod, apiRequestType: RequestType,
-                   product: T) -> URLRequest? {
+  func setJsonBody<T:Encodable>(httpMethod: HttpMethod,
+                                apiRequestType: RequestType,
+                                product: T) -> URLRequest? {
     guard var urlRequest = makeURLRequest(httpMethod: httpMethod,
-                                          apiRequestType: apiRequestType) else { return nil }
+                                          apiRequestType: apiRequestType) else {
+        return nil
+    }
     guard let encodedData = try? JSONEncoder().encode(product) else { return nil }
     
     urlRequest.httpBody = encodedData
