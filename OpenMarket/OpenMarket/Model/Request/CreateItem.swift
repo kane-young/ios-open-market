@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductRegisterRequest: Encodable {
+struct CreateItem: Encodable {
   let title: String
   let descriptions: String
   let price: Int

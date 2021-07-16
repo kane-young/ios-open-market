@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ProductDeleteRequest: Encodable {
+struct DeleteItem: Encodable {
   let password: String
 }

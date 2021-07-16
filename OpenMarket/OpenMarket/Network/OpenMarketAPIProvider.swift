@@ -38,7 +38,7 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
     }).resume()
   }
   
-  func postProduct(product: ProductRegisterRequest,
+  func postProduct(product: CreateItem,
                    apiRequestType: RequestType,
                    completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .post,
@@ -53,7 +53,7 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
     }
   }
 
-  func updateProduct(product: ProductUpdateRequest,
+  func updateProduct(product: UpdateItem,
                      apiRequestType: RequestType,
                      completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setMultiPartBody(httpMethod: .patch,
@@ -68,7 +68,7 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
     }
   }
   
-  func deleteProduct(product: ProductDeleteRequest,
+  func deleteProduct(product: DeleteItem,
                      apiRequestType: RequestType,
                      completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = setJsonBody(httpMethod: .delete,
