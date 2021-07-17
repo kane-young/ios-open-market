@@ -12,28 +12,27 @@ class ItemListCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var itemImageView: UIImageView!
     @IBOutlet weak var itemTitleLable: UILabel!
-    @IBOutlet weak var itemDiscountedPriceLabel: UILabel!
+    @IBOutlet weak var itemDiscountedPriceLabel: ItemDiscountedPriceLabel!
     @IBOutlet weak var itemPriceLabel: UILabel!
     @IBOutlet weak var stockLabel: UILabel!
 
-    override func awakeFromNib() {
-        
-    }
-    
-    func configureCell(image: UIImage, title: String, discountedPrice: Int?, price: Int, stock: Int) {
+    func configureCell(image: UIImage, title: String, discountedPrice: Int?, currency: String, price: Int, stock: Int) {
         itemImageView.image = image
         itemTitleLable.text = title
         if let discounted = discountedPrice {
-            itemDiscountedPriceLabel.text = convertIntToDecimal(discounted)
+            itemDiscountedPriceLabel.configureStrikeStyleText(convertIntToDecimal(currency, discounted))
+        } else {
+            itemDiscountedPriceLabel.isHidden = true
         }
-        itemPriceLabel.text = convertIntToDecimal(price)
+        itemPriceLabel.text = convertIntToDecimal(currency, price)
         stockLabel.text = checkStockCount(stock)
     }
     
-    private func convertIntToDecimal(_ number: Int) -> String? {
+    private func convertIntToDecimal(_ currency: String, _ number: Int) -> String? {
         let formatter: NumberFormatter = NumberFormatter()
         formatter.numberStyle = .decimal
-        return formatter.string(for: number)
+        guard let money = formatter.string(for: number) else { return nil }
+        return currency + money
     }
     
     private func checkStockCount(_ stock: Int) -> String {
@@ -42,6 +41,6 @@ class ItemListCollectionViewCell: UICollectionViewCell {
             return "품절"
         }
         stockLabel.textColor = .darkGray
-        return String(stock)
+        return "잔여수량 : " + String(stock)
     }
 }
