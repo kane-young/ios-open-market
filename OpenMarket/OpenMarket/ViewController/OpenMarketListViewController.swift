@@ -18,8 +18,25 @@ class OpenMarketListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchProjectItems()
         configureSegmentedControl()
         configureCollectionView()
+    }
+    
+    private func fetchProjectItems() {
+        openMarketAPIProvider.getData(id: 1) { [weak self] result in
+            switch result {
+            case .success(let data):
+            do {
+                let decodedItem = try JSONDecoder().decode(ItemList.self, from: data)
+                self?.openMarketItems.append(contentsOf: decodedItem.items)
+            } catch {
+                
+            }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 
     private func configureSegmentedControl() {
@@ -39,15 +56,6 @@ class OpenMarketListViewController: UIViewController {
         layout.minimumInteritemSpacing = 0
         layout.itemSize = CGSize(width: width, height: height)
         collectionView.collectionViewLayout = layout
-    }
-    
-    private func fetchOpenMarketItems() {
-        openMarketAPIProvider.getData(apiRequestType: .loadPage(page: 1), completionHandler: { [weak self] result in
-            switch result {
-            case .success(let items):
-                self?.openMarketItems.append(items)
-            }
-        })
     }
     
     @objc func segmentedControlChangedValue(_ sender: UISegmentedControl) {
@@ -70,7 +78,7 @@ extension OpenMarketListViewController: UICollectionViewDelegate {
 
 extension OpenMarketListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return openMarketItem.count
+        return openMarketItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -86,6 +94,16 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
 
 extension OpenMarketListViewController: UICollectionViewDelegateFlowLayout {
     
+}
+
+extension OpenMarketListViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentOffsetY = scrollView.contentOffset.y
+        let collectionViewContentSize = collectionView.contentSize.height
+        let pagiationY = collectionViewContentSize * 0.2
+        
+        if contentOffsetY > collectionViewContentSize
+    }
 }
 
 enum LayoutType {

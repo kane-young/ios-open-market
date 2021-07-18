@@ -1,20 +1,25 @@
 //
-//  ItemListCollectionViewCell.swift
+//  ItemGridCollectionViewCell.swift
 //  OpenMarket
 //
-//  Created by 이영우 on 2021/07/13.
+//  Created by 이영우 on 2021/07/18.
 //
 
 import UIKit
 
-class ItemListCollectionViewCell: UICollectionViewCell {
-    static let identifier: String = "ItemListCollectionViewCell"
+class ItemGridCollectionViewCell: UICollectionViewCell {
+    static let identifier: String = "ItemGridCollectionViewCell"
 
     @IBOutlet weak var itemImageView: UIImageView!
     @IBOutlet weak var itemTitleLable: UILabel!
     @IBOutlet weak var itemDiscountedPriceLabel: ItemDiscountedPriceLabel!
     @IBOutlet weak var itemPriceLabel: UILabel!
     @IBOutlet weak var stockLabel: UILabel!
+    
+    override func awakeFromNib() {
+        self.contentView.layer.cornerRadius = 10
+        self.contentView.layer.borderWidth = 1
+    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
