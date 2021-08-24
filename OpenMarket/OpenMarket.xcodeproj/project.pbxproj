@@ -10,7 +10,7 @@
 		85227392264CF716002BDEC3 /* ItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85227391264CF716002BDEC3 /* ItemList.swift */; };
 		85227394264CF808002BDEC3 /* UpdateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85227393264CF808002BDEC3 /* UpdateItem.swift */; };
 		859BAB4626583D82009C2F8F /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4426583D82009C2F8F /* HttpMethod.swift */; };
-		859BAB4726583D82009C2F8F /* RequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4526583D82009C2F8F /* RequestType.swift */; };
+		859BAB4726583D82009C2F8F /* OpenMarketAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4526583D82009C2F8F /* OpenMarketAPI.swift */; };
 		859BAB4D26583FA0009C2F8F /* OpenMarketAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4C26583FA0009C2F8F /* OpenMarketAPIProvider.swift */; };
 		859BAB5026583FCC009C2F8F /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4F26583FCC009C2F8F /* DataExtension.swift */; };
 		859BAB60265846FD009C2F8F /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB5F265846FD009C2F8F /* MockURLProtocol.swift */; };
@@ -57,7 +57,7 @@
 		85227391264CF716002BDEC3 /* ItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemList.swift; sourceTree = "<group>"; };
 		85227393264CF808002BDEC3 /* UpdateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateItem.swift; sourceTree = "<group>"; };
 		859BAB4426583D82009C2F8F /* HttpMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
-		859BAB4526583D82009C2F8F /* RequestType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestType.swift; sourceTree = "<group>"; };
+		859BAB4526583D82009C2F8F /* OpenMarketAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenMarketAPI.swift; sourceTree = "<group>"; };
 		859BAB4C26583FA0009C2F8F /* OpenMarketAPIProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenMarketAPIProvider.swift; path = OpenMarket/Network/OpenMarketAPIProvider.swift; sourceTree = SOURCE_ROOT; };
 		859BAB4F26583FCC009C2F8F /* DataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
 		859BAB5F265846FD009C2F8F /* MockURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
@@ -127,7 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				859BAB4426583D82009C2F8F /* HttpMethod.swift */,
-				859BAB4526583D82009C2F8F /* RequestType.swift */,
+				859BAB4526583D82009C2F8F /* OpenMarketAPI.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -384,7 +384,7 @@
 				C39DA42B264D47C0001F1B33 /* CreateItem.swift in Sources */,
 				859BAB5026583FCC009C2F8F /* DataExtension.swift in Sources */,
 				85227392264CF716002BDEC3 /* ItemList.swift in Sources */,
-				859BAB4726583D82009C2F8F /* RequestType.swift in Sources */,
+				859BAB4726583D82009C2F8F /* OpenMarketAPI.swift in Sources */,
 				859BAB4626583D82009C2F8F /* HttpMethod.swift in Sources */,
 				859BAB4D26583FA0009C2F8F /* OpenMarketAPIProvider.swift in Sources */,
 				C34BCA3B265CC3A400E48F65 /* JsonProtocol.swift in Sources */,

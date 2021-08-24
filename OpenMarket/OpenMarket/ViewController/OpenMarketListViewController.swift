@@ -11,10 +11,9 @@ class OpenMarketListViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var layoutType: LayoutType = LayoutType.list
-    private var openMarketAPIProvider: OpenMarketAPIProvider = OpenMarketAPIProvider()
-    private var nextPageToLoad: Int = 1
     private var openMarketItems: [ItemList.Item] = []
+    private var layoutType: LayoutType = .list
+    private let openMarketApiProvider = OpenMarketAPIProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,17 +23,20 @@ class OpenMarketListViewController: UIViewController {
     }
     
     private func fetchProjectItems() {
-        openMarketAPIProvider.getData(id: 1) { [weak self] result in
+        openMarketApiProvider.getProducts(page: 1) { [weak self] result in
             switch result {
             case .success(let data):
-            do {
-                let decodedItem = try JSONDecoder().decode(ItemList.self, from: data)
-                self?.openMarketItems.append(contentsOf: decodedItem.items)
-            } catch {
+                let decodedData = try? JSONDecoder().decode(ItemList.self
+                                                       , from: data)
+                if let data = decodedData {
+                    self?.openMarketItems = data.items
+                }
                 
-            }
-            case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure:
+                fatalError()
             }
         }
     }
@@ -56,18 +58,23 @@ class OpenMarketListViewController: UIViewController {
         layout.minimumInteritemSpacing = 0
         layout.itemSize = CGSize(width: width, height: height)
         collectionView.collectionViewLayout = layout
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.register(UINib(nibName: ItemListCollectionViewCell.identifier, bundle: nil), forCellWithReuseIdentifier: ItemListCollectionViewCell.identifier)
+        collectionView.register(UINib(nibName: ItemGridCollectionViewCell.identifier, bundle: nil), forCellWithReuseIdentifier: ItemGridCollectionViewCell.identifier)
     }
     
     @objc func segmentedControlChangedValue(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
             layoutType = .list
-            
+            collectionView.reloadData()
         case 1:
             layoutType = .grid
-            
+            collectionView.reloadData()
         default:
-            break
+            return
         }
     }
 }
@@ -82,27 +89,40 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        switch layoutType {
-//        case .list:
-//
-//        case .grid:
-//
-//        }
-        return UICollectionViewCell()
+        if openMarketItems.isEmpty == true {
+            return UICollectionViewCell()
+        }
+        
+        let item = openMarketItems[indexPath.item]
+        switch layoutType {
+        case .list:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCollectionViewCell.identifier, for: indexPath) as? ItemListCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configureCell(image: item.thumbnails.first!, title: item.title, discountedPrice: item.discountedPrice, currency: item.currency, price: item.price, stock: item.stock)
+            return cell
+        case .grid:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemGridCollectionViewCell.identifier, for: indexPath) as? ItemGridCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configureCell(image: item.thumbnails.first!, title: item.title, discountedPrice: item.discountedPrice, currency: item.currency, price: item.price, stock: item.stock)
+            return cell
+        }
     }
 }
 
 extension OpenMarketListViewController: UICollectionViewDelegateFlowLayout {
-    
-}
-
-extension OpenMarketListViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentOffsetY = scrollView.contentOffset.y
-        let collectionViewContentSize = collectionView.contentSize.height
-        let pagiationY = collectionViewContentSize * 0.2
-        
-        if contentOffsetY > collectionViewContentSize
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        switch layoutType {
+        case .list:
+            let cellWidth = collectionView.frame.width
+            let cellHeight = collectionView.frame.height / 10
+            return CGSize(width: cellWidth, height: cellHeight)
+        case .grid:
+            let cellWidth = collectionView.frame.width / 2
+            let cellHeight = collectionView.frame.height / 3
+            return CGSize(width: cellWidth, height: cellHeight)
+        }
     }
 }
 

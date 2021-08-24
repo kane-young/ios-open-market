@@ -10,31 +10,38 @@ import UIKit
 class ItemListCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "ItemListCollectionViewCell"
 
-    @IBOutlet weak var itemImageView: UIImageView!
-    @IBOutlet weak var itemTitleLable: UILabel!
-    @IBOutlet weak var itemDiscountedPriceLabel: ItemDiscountedPriceLabel!
-    @IBOutlet weak var itemPriceLabel: UILabel!
-    @IBOutlet weak var stockLabel: UILabel!
+    @IBOutlet private weak var itemImageView: UIImageView!
+    @IBOutlet private weak var itemTitleLabel: UILabel!
+    @IBOutlet private weak var itemDiscountedPriceLabel: ItemDiscountedPriceLabel!
+    @IBOutlet private weak var itemPriceLabel: UILabel!
+    @IBOutlet private weak var stockLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        itemTitleLabel.adjustsFontSizeToFitWidth = true
+    }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
-        itemImageView.image = nil
-        itemTitleLable.text = nil
-        itemDiscountedPriceLabel.text = nil
-        itemPriceLabel.text = nil
-        stockLabel.text = nil
+        self.itemImageView.image = nil
+        self.itemTitleLabel.text = nil
+        self.itemDiscountedPriceLabel.isHidden = false
+        self.itemDiscountedPriceLabel.text = nil
+        self.itemPriceLabel.text = nil
+        self.stockLabel.text = nil
     }
-
-    func configureCell(image: UIImage, title: String, discountedPrice: Int?, currency: String, price: Int, stock: Int) {
-        itemImageView.image = image
-        itemTitleLable.text = title
+    
+    func configureCell(image: String, title: String, discountedPrice: Int?, currency: String, price: Int, stock: Int) {
+        guard let imageURL = URL(string: image) else { return }
+        guard let imageData = try? Data(contentsOf: imageURL) else { return }
+        itemImageView?.image = UIImage(data: imageData)
+        itemTitleLabel?.text = title
         if let discounted = discountedPrice {
-            itemDiscountedPriceLabel.configureStrikeStyleText(convertIntToDecimal(currency, discounted))
+            itemDiscountedPriceLabel?.configureStrikeStyleText(convertIntToDecimal(currency, discounted))
         } else {
-            itemDiscountedPriceLabel.isHidden = true
+            itemDiscountedPriceLabel?.isHidden = true
         }
-        itemPriceLabel.text = convertIntToDecimal(currency, price)
-        stockLabel.text = checkStockCount(stock)
+        itemPriceLabel?.text = convertIntToDecimal(currency, price)
+        stockLabel?.text = checkStockCount(stock)
     }
     
     private func convertIntToDecimal(_ currency: String, _ number: Int) -> String? {
@@ -50,6 +57,18 @@ class ItemListCollectionViewCell: UICollectionViewCell {
             return "품절"
         }
         stockLabel.textColor = .darkGray
+        if stock > 1000 {
+            return "잔여수량 : 여유"
+        }
         return "잔여수량 : " + String(stock)
+    }
+    
+    private func downloadImage(url: URL, completionHandler: @escaping (UIImage) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, let imageData = UIImage(data: data) else {
+                return
+            }
+            completionHandler(imageData)
+        }
     }
 }
