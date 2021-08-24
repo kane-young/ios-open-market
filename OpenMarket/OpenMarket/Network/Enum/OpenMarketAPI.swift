@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RequestType {
+enum OpenMarketAPI {
   case loadPage(page: Int)
   case loadProduct(id: Int)
   case postProduct
@@ -32,7 +32,7 @@ enum RequestType {
   }
   
   var url: URL? {
-    return URL(string: "\(RequestType.baseURL)\(urlPath)")
+    return URL(string: "\(OpenMarketAPI.baseURL)\(urlPath)")
   }
   
   var httpMethod: HttpMethod {

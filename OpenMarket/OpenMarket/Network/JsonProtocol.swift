@@ -9,13 +9,13 @@ import Foundation
 
 protocol JsonProtocol: URLRequestProtocol {
   func setJsonBody<T:Encodable>(httpMethod: HttpMethod,
-                                apiRequestType: RequestType,
+                                apiRequestType: OpenMarketAPI,
                                 product: T) -> URLRequest?
 }
 
 extension JsonProtocol {
   func setJsonBody<T:Encodable>(httpMethod: HttpMethod,
-                                apiRequestType: RequestType,
+                                apiRequestType: OpenMarketAPI,
                                 product: T) -> URLRequest? {
     guard var urlRequest = makeURLRequest(httpMethod: httpMethod,
                                           apiRequestType: apiRequestType) else {

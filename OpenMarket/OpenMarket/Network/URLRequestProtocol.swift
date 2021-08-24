@@ -9,11 +9,11 @@ import Foundation
 
 protocol URLRequestProtocol {
   static var boundary: String { get }
-  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: RequestType) -> URLRequest?
+  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: OpenMarketAPI) -> URLRequest?
 }
 
 extension URLRequestProtocol {
-  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: RequestType) -> URLRequest? {
+  func makeURLRequest(httpMethod: HttpMethod, apiRequestType: OpenMarketAPI) -> URLRequest? {
     guard let url = apiRequestType.url else { return nil }
     var urlRequest = URLRequest(url: url)
     let contentType = httpMethod.makeContentTypeText(boundary: Self.boundary)

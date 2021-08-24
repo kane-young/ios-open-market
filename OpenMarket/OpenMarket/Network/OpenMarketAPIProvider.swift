@@ -5,7 +5,7 @@
 //  Created by 이영우 on 2021/05/20.
 //
 
-import Foundation
+import UIKit
 
 struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
   let session: URLSession
@@ -24,7 +24,7 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
       }
       
       guard let response = response as? HTTPURLResponse,
-            RequestType.successStatusCode.contains(response.statusCode) else {
+            OpenMarketAPI.successStatusCode.contains(response.statusCode) else {
         completionHandler(.failure(.invalidResponse))
         return
       }
@@ -82,7 +82,7 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
     }
   }
 
-  func getData(id: Int,
+  func getProduct(id: Int,
                completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = makeURLRequest(httpMethod: .get,
                                           apiRequestType: .loadProduct(id: id)) else {
@@ -95,7 +95,7 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
     }
   }
     
-    func getDatas(page: Int,
+    func getProducts(page: Int,
                   completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
         guard let urlRequest = makeURLRequest(httpMethod: .get,
                                               apiRequestType: .loadPage(page: page)) else {
@@ -105,6 +105,15 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
         
         dataTask(with: urlRequest) { data in
             completionHandler(data)
+        }
+    }
+    
+    func downloadImage(url: URL, completionHandler: @escaping (UIImage) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, let imageData = UIImage(data: data) else {
+                return
+            }
+            completionHandler(imageData)
         }
     }
 }

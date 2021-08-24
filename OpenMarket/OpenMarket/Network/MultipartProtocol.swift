@@ -9,7 +9,7 @@ import Foundation
 
 protocol MultiPartProtocol: URLRequestProtocol {
   func setMultiPartBody(httpMethod: HttpMethod,
-                        apiRequestType: RequestType,
+                        apiRequestType: OpenMarketAPI,
                         product: Encodable) -> URLRequest?
   func makeBodyForImage(imageName: String, images: [Data], boundary: String) -> Data
   func makeBodyForNormal(name: String, value: Any, boundary: String) -> Data
@@ -17,7 +17,7 @@ protocol MultiPartProtocol: URLRequestProtocol {
 
 extension MultiPartProtocol {
   func setMultiPartBody(httpMethod: HttpMethod,
-                        apiRequestType: RequestType,
+                        apiRequestType: OpenMarketAPI,
                         product: Encodable) -> URLRequest? {
     guard var urlRequest = makeURLRequest(httpMethod: httpMethod,
                                           apiRequestType: apiRequestType) else {
