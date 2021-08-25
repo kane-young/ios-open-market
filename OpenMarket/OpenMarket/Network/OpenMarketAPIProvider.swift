@@ -83,7 +83,7 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
   }
 
   func getProduct(id: Int,
-               completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+                  completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     guard let urlRequest = makeURLRequest(httpMethod: .get,
                                           apiRequestType: .loadProduct(id: id)) else {
       completionHandler(.failure(.invalidRequest))
@@ -94,26 +94,26 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
       completionHandler(data)
     }
   }
-    
-    func getProducts(page: Int,
-                  completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-        guard let urlRequest = makeURLRequest(httpMethod: .get,
-                                              apiRequestType: .loadPage(page: page)) else {
-            completionHandler(.failure(.invalidRequest))
-            return
-        }
-        
-        dataTask(with: urlRequest) { data in
-            completionHandler(data)
-        }
+
+  func getProducts(page: Int,
+                   completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+    guard let urlRequest = makeURLRequest(httpMethod: .get,
+                                          apiRequestType: .loadPage(page: page)) else {
+      completionHandler(.failure(.invalidRequest))
+      return
     }
     
-    func downloadImage(url: URL, completionHandler: @escaping (UIImage) -> Void) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, let imageData = UIImage(data: data) else {
-                return
-            }
-            completionHandler(imageData)
-        }
+    dataTask(with: urlRequest) { data in
+      completionHandler(data)
     }
+  }
+
+  func downloadImage(url: URL, completionHandler: @escaping (UIImage) -> Void) {
+    URLSession.shared.dataTask(with: url) { data, response, error in
+      guard let data = data, let imageData = UIImage(data: data) else {
+        return
+      }
+      completionHandler(imageData)
+    }
+  }
 }
