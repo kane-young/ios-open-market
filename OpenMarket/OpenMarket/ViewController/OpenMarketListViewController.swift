@@ -15,7 +15,8 @@ class OpenMarketListViewController: UIViewController {
   private var layoutType: LayoutType = .list
   private let openMarketApiProvider = OpenMarketAPIProvider()
   private var currentPage: Int = 1
-  
+  private var isPaging: Bool = false
+
   override func viewDidLoad() {
     super.viewDidLoad()
     fetchProjectItems(page: currentPage)
@@ -27,12 +28,11 @@ class OpenMarketListViewController: UIViewController {
     openMarketApiProvider.getProducts(page: page) { [weak self] result in
       switch result {
       case .success(let data):
-        let decodedData = try? JSONDecoder().decode(ItemList.self
-                                                    , from: data)
+        let decodedData = try? JSONDecoder().decode(ItemList.self, from: data)
         if let data = decodedData {
           self?.openMarketItems.append(contentsOf: data.items)
         }
-        
+
         DispatchQueue.main.async {
           self?.collectionView.reloadData()
         }
@@ -134,9 +134,39 @@ enum LayoutType {
 
 extension OpenMarketListViewController {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let position = scrollView.contentOffset.y
-    if (position > (scrollView.contentSize.height - 100 - scrollView.frame.size.height)) {
-      fetchProjectItems(page: currentPage)
+    let offsetY = scrollView.contentOffset.y
+    let contentHeight = scrollView.contentSize.height
+    let height = scrollView.frame.height
+    
+    if offsetY > (contentHeight - height) {
+      if isPaging == false {
+        currentPage += 1
+        print("페이지 fetch \(currentPage)")
+        fetchProjectItems(page: currentPage)
+      }
+    }
+  }
+  
+  func fetchNextPage() {
+    isPaging = true
+    openMarketApiProvider.getProducts(page: currentPage) { [weak self] result in
+      switch result {
+      case .success(let data):
+        guard let currentCellCount = self?.openMarketItems.count else { return }
+        let decodedData = try? JSONDecoder().decode(ItemList.self, from: data)
+        guard let data = decodedData else { return }
+        self?.openMarketItems.append(contentsOf: data.items)
+        let range = currentCellCount..<data.items.count + currentCellCount
+        DispatchQueue.main.async {
+          self?.collectionView.performBatchUpdates({
+            let indexPaths = range.map{ IndexPath(item: $0, section: 0) }
+            self?.collectionView.insertItems(at: indexPaths)
+          })
+        }
+        self?.isPaging = false
+      case .failure:
+        fatalError()
+      }
     }
   }
 }
