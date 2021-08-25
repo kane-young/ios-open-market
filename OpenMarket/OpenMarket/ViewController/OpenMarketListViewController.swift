@@ -14,22 +14,23 @@ class OpenMarketListViewController: UIViewController {
   private var openMarketItems: [ItemList.Item] = []
   private var layoutType: LayoutType = .list
   private let openMarketApiProvider = OpenMarketAPIProvider()
+  private var currentPage: Int = 1
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    fetchProjectItems()
+    fetchProjectItems(page: currentPage)
     configureSegmentedControl()
     configureCollectionView()
   }
   
-  private func fetchProjectItems() {
-    openMarketApiProvider.getProducts(page: 1) { [weak self] result in
+  private func fetchProjectItems(page: Int) {
+    openMarketApiProvider.getProducts(page: page) { [weak self] result in
       switch result {
       case .success(let data):
         let decodedData = try? JSONDecoder().decode(ItemList.self
                                                     , from: data)
         if let data = decodedData {
-          self?.openMarketItems = data.items
+          self?.openMarketItems.append(contentsOf: data.items)
         }
         
         DispatchQueue.main.async {
@@ -99,13 +100,13 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCollectionViewCell.identifier, for: indexPath) as? ItemListCollectionViewCell else {
         return UICollectionViewCell()
       }
-      cell.configureCell(image: item.thumbnails.first!, title: item.title, discountedPrice: item.discountedPrice, currency: item.currency, price: item.price, stock: item.stock)
+      cell.configureCell(item: item)
       return cell
     case .grid:
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemGridCollectionViewCell.identifier, for: indexPath) as? ItemGridCollectionViewCell else {
         return UICollectionViewCell()
       }
-      cell.configureCell(image: item.thumbnails.first!, title: item.title, discountedPrice: item.discountedPrice, currency: item.currency, price: item.price, stock: item.stock)
+      cell.configureCell(item: item)
       return cell
     }
   }
@@ -129,4 +130,13 @@ extension OpenMarketListViewController: UICollectionViewDelegateFlowLayout {
 enum LayoutType {
   case list
   case grid
+}
+
+extension OpenMarketListViewController {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let position = scrollView.contentOffset.y
+    if (position > (scrollView.contentSize.height - 100 - scrollView.frame.size.height)) {
+      fetchProjectItems(page: currentPage)
+    }
+  }
 }

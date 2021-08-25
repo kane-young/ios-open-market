@@ -30,7 +30,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="9wU-UK-VkI">
                                 <rect key="frame" x="97" y="316" width="70.5" height="36"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USD 2,500" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b0Y-C1-th3" customClass="ItemDiscountedPriceLabel" customModule="OpenMarket" customModuleProvider="target">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USD 2,500" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b0Y-C1-th3">
                                         <rect key="frame" x="0.0" y="0.0" width="70.5" height="17"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" systemColor="systemRedColor"/>
@@ -82,7 +82,7 @@
                 <outlet property="itemDiscountedPriceLabel" destination="b0Y-C1-th3" id="JUM-3j-ELg"/>
                 <outlet property="itemImageView" destination="NOA-Jv-Xx7" id="owh-Lm-oWb"/>
                 <outlet property="itemPriceLabel" destination="vEc-K1-45a" id="Itu-ex-hxz"/>
-                <outlet property="itemTitleLable" destination="gfY-P9-7RJ" id="mPO-9W-4MG"/>
+                <outlet property="itemTitleLabel" destination="gfY-P9-7RJ" id="mPO-9W-4MG"/>
                 <outlet property="stockLabel" destination="aSm-Xb-TWL" id="9o1-iV-jvf"/>
             </connections>
             <point key="canvasLocation" x="175.36231884057972" y="262.16517857142856"/>

@@ -12,7 +12,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
   
   @IBOutlet private weak var itemImageView: UIImageView!
   @IBOutlet private weak var itemTitleLabel: UILabel!
-  @IBOutlet private weak var itemDiscountedPriceLabel: ItemDiscountedPriceLabel!
+  @IBOutlet private weak var itemDiscountedPriceLabel: UILabel!
   @IBOutlet private weak var itemPriceLabel: UILabel!
   @IBOutlet private weak var stockLabel: UILabel!
   
@@ -30,25 +30,39 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     self.stockLabel.text = nil
   }
   
-  func configureCell(image: String, title: String, discountedPrice: Int?, currency: String, price: Int, stock: Int) {
-    guard let imageURL = URL(string: image) else { return }
-    guard let imageData = try? Data(contentsOf: imageURL) else { return }
-    itemImageView?.image = UIImage(data: imageData)
-    itemTitleLabel?.text = title
-    if let discounted = discountedPrice {
-      itemDiscountedPriceLabel?.configureStrikeStyleText(convertIntToDecimal(currency, discounted))
-    } else {
-      itemDiscountedPriceLabel?.isHidden = true
-    }
-    itemPriceLabel?.text = convertIntToDecimal(currency, price)
-    stockLabel?.text = checkStockCount(stock)
+  func configureCell(item: ItemList.Item) {
+    configureThumbnail(item)
+    configurePriceLabel(item: item)
+    stockLabel.text = checkStockCount(item.stock)
+    itemTitleLabel.text = item.title
   }
   
-  private func convertIntToDecimal(_ currency: String, _ number: Int) -> String? {
+  private func configurePriceLabel(item: ItemList.Item) {
+    guard let itemPrice = convertIntToPrice(item.currency, item.price) else { return }
+    if let discountedPrice = item.discountedPrice {
+      let attributedString = NSMutableAttributedString(string: itemPrice)
+      attributedString.addAttribute(NSAttributedString.Key.strikethroughStyle,
+                                   value: NSUnderlineStyle.single.rawValue,
+                                   range: NSMakeRange(0, attributedString.length))
+      itemPriceLabel.textColor = UIColor.systemRed
+      itemPriceLabel.attributedText = attributedString
+      itemDiscountedPriceLabel.textColor = UIColor.systemGray
+      itemDiscountedPriceLabel.isHidden = false
+      itemDiscountedPriceLabel.text = convertIntToPrice(item.currency, discountedPrice)
+    } else {
+      itemDiscountedPriceLabel.isHidden = true
+      itemPriceLabel.textColor = UIColor.systemGray
+      itemPriceLabel.text = itemPrice
+    }
+  }
+  
+  private func convertIntToPrice(_ currency: String, _ number: Int) -> String? {
     let formatter: NumberFormatter = NumberFormatter()
     formatter.numberStyle = .decimal
-    guard let money = formatter.string(for: number) else { return nil }
-    return currency + money
+    guard let money = formatter.string(for: number) else {
+      return nil
+    }
+    return currency + String.whiteSpace + money
   }
   
   private func checkStockCount(_ stock: Int) -> String {
@@ -63,12 +77,20 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     return "잔여수량 : " + String(stock)
   }
   
+  private func configureThumbnail(_ item: ItemList.Item) {
+    guard let firstThumbnail = item.thumbnails.first,
+          let url = URL(string: firstThumbnail) else { return }
+    downloadImage(url: url) { [weak self] image in
+      DispatchQueue.main.async {
+        self?.itemImageView.image = image
+      }
+    }
+  }
+  
   private func downloadImage(url: URL, completionHandler: @escaping (UIImage) -> Void) {
     URLSession.shared.dataTask(with: url) { data, response, error in
-      guard let data = data, let imageData = UIImage(data: data) else {
-        return
-      }
-      completionHandler(imageData)
-    }
+      guard let data = data, let image = UIImage(data: data) else { return }
+      completionHandler(image)
+    }.resume()
   }
 }
