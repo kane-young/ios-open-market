@@ -39,62 +39,73 @@ class OpenMarketAPIProvider: MarketRequestable {
     }).resume()
   }
   
-//  func postProduct(product: CreateItem,
-//                   completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-//    guard let urlRequest = setMultiPartBody(httpMethod: .post,
-//                                            apiRequestType: .postProduct,
-//                                            product: product) else {
-//      completionHandler(.failure(.invalidRequest))
-//      return
-//    }
-//
-//    dataTask(with: urlRequest) { data in
-//      completionHandler(data)
-//    }
-//  }
-//
-//  func updateProduct(product: UpdateItem,
-//                     id: Int,
-//                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-//    guard let urlRequest = setMultiPartBody(httpMethod: .patch,
-//                                            apiRequestType: .patchProduct(id: id),
-//                                            product: product) else {
-//      completionHandler(.failure(.invalidRequest))
-//      return
-//    }
-//
-//    dataTask(with: urlRequest) { data in
-//      completionHandler(data)
-//    }
-//  }
-//
-//  func deleteProduct(product: DeleteItem,
-//                     id: Int,
-//                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-//    guard let urlRequest = setJsonBody(httpMethod: .delete,
-//                                       apiRequestType: .deleteProduct(id: id),
-//                                       product: product) else {
-//      completionHandler(.failure(.invalidRequest))
-//      return
-//    }
-//
-//    dataTask(with: urlRequest) { data in
-//      completionHandler(data)
-//    }
-//  }
-//
-//  func getProduct(id: Int,
-//                  completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-//    guard let urlRequest = makeURLRequest(httpMethod: .get,
-//                                          apiRequestType: .loadProduct(id: id)) else {
-//      completionHandler(.failure(.invalidRequest))
-//      return
-//    }
-//
-//    dataTask(with: urlRequest) { data in
-//      completionHandler(data)
-//    }
-//  }
+  func postProduct(item: CreateItem,
+                   completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+    guard let request = createPostRequest(with: item) else {
+      completionHandler(.failure(.invalidRequest))
+      return
+    }
+    
+    dataTask(with: request) { result in
+      switch result {
+      case .success(let data):
+        completionHandler(.success(data))
+      case .failure(let error):
+        completionHandler(.failure(error))
+      }
+    }
+  }
+
+  func updateProduct(id: Int, to item: UpdateItem,
+                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+    guard let request = createPatchRequest(id: id, with: item) else {
+      completionHandler(.failure(.invalidRequest))
+      return
+    }
+    
+    dataTask(with: request) { result in
+      switch result {
+      case .success(let data):
+        completionHandler(.success(data))
+      case .failure(let error):
+        completionHandler(.failure(error))
+      }
+    }
+  }
+
+  func deleteProduct(id: Int, with item: DeleteItem, completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+    guard let request = createDeleteRequest(id: id, with: item) else {
+      completionHandler(.failure(.invalidRequest))
+      return
+    }
+    
+    dataTask(with: request) { result in
+      switch result {
+      case .success(let data):
+        completionHandler(.success(data))
+      case .failure(let error):
+        completionHandler(.failure(error))
+      }
+    }
+  }
+
+  func getProduct(id: Int,
+                  completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+    guard let url = OpenMarketAPI.loadProduct(id: id).url else {
+      completionHandler(.failure(.invalidURL))
+      return
+    }
+    let request = URLRequest(url: url)
+    
+    dataTask(with: request) { result in
+      switch result {
+      case .success(let data):
+        completionHandler(.success(data))
+      case .failure(let error):
+        completionHandler(.failure(error))
+      }
+    }
+  }
 
   func getProducts(pagination: Bool = false, page: Int,
                    completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
