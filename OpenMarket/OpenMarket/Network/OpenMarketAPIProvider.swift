@@ -7,8 +7,9 @@
 
 import UIKit
 
-struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
+class OpenMarketAPIProvider: MarketRequestable {
   let session: URLSession
+  var isPaginating: Bool = false
   static var boundary: String = UUID().uuidString
   
   init(session: URLSession = URLSession.shared) {
@@ -38,73 +39,86 @@ struct OpenMarketAPIProvider: JsonProtocol, MultiPartProtocol {
     }).resume()
   }
   
-  func postProduct(product: CreateItem,
+//  func postProduct(product: CreateItem,
+//                   completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+//    guard let urlRequest = setMultiPartBody(httpMethod: .post,
+//                                            apiRequestType: .postProduct,
+//                                            product: product) else {
+//      completionHandler(.failure(.invalidRequest))
+//      return
+//    }
+//
+//    dataTask(with: urlRequest) { data in
+//      completionHandler(data)
+//    }
+//  }
+//
+//  func updateProduct(product: UpdateItem,
+//                     id: Int,
+//                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+//    guard let urlRequest = setMultiPartBody(httpMethod: .patch,
+//                                            apiRequestType: .patchProduct(id: id),
+//                                            product: product) else {
+//      completionHandler(.failure(.invalidRequest))
+//      return
+//    }
+//
+//    dataTask(with: urlRequest) { data in
+//      completionHandler(data)
+//    }
+//  }
+//
+//  func deleteProduct(product: DeleteItem,
+//                     id: Int,
+//                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+//    guard let urlRequest = setJsonBody(httpMethod: .delete,
+//                                       apiRequestType: .deleteProduct(id: id),
+//                                       product: product) else {
+//      completionHandler(.failure(.invalidRequest))
+//      return
+//    }
+//
+//    dataTask(with: urlRequest) { data in
+//      completionHandler(data)
+//    }
+//  }
+//
+//  func getProduct(id: Int,
+//                  completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
+//    guard let urlRequest = makeURLRequest(httpMethod: .get,
+//                                          apiRequestType: .loadProduct(id: id)) else {
+//      completionHandler(.failure(.invalidRequest))
+//      return
+//    }
+//
+//    dataTask(with: urlRequest) { data in
+//      completionHandler(data)
+//    }
+//  }
+
+  func getProducts(pagination: Bool = false, page: Int,
                    completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-    guard let urlRequest = setMultiPartBody(httpMethod: .post,
-                                            apiRequestType: .postProduct,
-                                            product: product) else {
-      completionHandler(.failure(.invalidRequest))
+    guard let url = OpenMarketAPI.loadPage(page: page).url else {
+      completionHandler(.failure(.invalidURL))
       return
     }
     
-    dataTask(with: urlRequest) { data in
-      completionHandler(data)
-    }
-  }
-
-  func updateProduct(product: UpdateItem,
-                     id: Int,
-                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-    guard let urlRequest = setMultiPartBody(httpMethod: .patch,
-                                            apiRequestType: .patchProduct(id: id),
-                                            product: product) else {
-      completionHandler(.failure(.invalidRequest))
-      return
+    if pagination {
+      isPaginating = true
     }
     
-    dataTask(with: urlRequest) { data in
-      completionHandler(data)
-    }
-  }
-  
-  func deleteProduct(product: DeleteItem,
-                     id: Int,
-                     completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-    guard let urlRequest = setJsonBody(httpMethod: .delete,
-                                       apiRequestType: .deleteProduct(id: id),
-                                       product: product) else {
-      completionHandler(.failure(.invalidRequest))
-      return
-    }
+    let urlRequest = URLRequest(url: url)
     
-    dataTask(with: urlRequest) { data in
-      completionHandler(data)
-    }
-  }
-
-  func getProduct(id: Int,
-                  completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-    guard let urlRequest = makeURLRequest(httpMethod: .get,
-                                          apiRequestType: .loadProduct(id: id)) else {
-      completionHandler(.failure(.invalidRequest))
-      return
-    }
-    
-    dataTask(with: urlRequest) { data in
-      completionHandler(data)
-    }
-  }
-
-  func getProducts(page: Int,
-                   completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
-    guard let urlRequest = makeURLRequest(httpMethod: .get,
-                                          apiRequestType: .loadPage(page: page)) else {
-      completionHandler(.failure(.invalidRequest))
-      return
-    }
-    
-    dataTask(with: urlRequest) { data in
-      completionHandler(data)
+    dataTask(with: urlRequest) { [weak self] result in
+      switch result {
+      case .success(let data):
+        completionHandler(.success(data))
+        if pagination {
+          self?.isPaginating = false
+        }
+      case .failure(let error):
+        completionHandler(.failure(error))
+      }
     }
   }
 

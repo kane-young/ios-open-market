@@ -8,7 +8,7 @@
 import Foundation
 
 enum HttpMethod: CustomStringConvertible {
-  case get, post, put, patch, delete
+  case get, post, patch, delete
   
   var description: String {
     switch self {
@@ -16,8 +16,6 @@ enum HttpMethod: CustomStringConvertible {
       return "GET"
     case .post:
       return "POST"
-    case .put:
-      return "PUT"
     case .patch:
       return "PATCH"
     case .delete:
@@ -27,12 +25,11 @@ enum HttpMethod: CustomStringConvertible {
   
   static let contentType = "Content-Type"
 
-  func makeContentTypeText(boundary: String) -> String {
-    switch self {
-    case .get, .delete, .put:
-      return "Application/json"
-    case .patch, .post:
-      return "multipart/form-data; boundary=\(boundary)"
-    }
+  static func createJsonContentType() -> String {
+    return "Application/json"
+  }
+  
+  static func createMultipartContentType(boundary: String) -> String {
+    return "multipart/form-data; boundary=\(boundary)"
   }
 }

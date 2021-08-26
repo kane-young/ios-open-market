@@ -18,8 +18,7 @@
 		C342120226A33AE5001E8DD0 /* ItemGridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C342120026A33AE5001E8DD0 /* ItemGridCollectionViewCell.swift */; };
 		C342120326A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C342120126A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib */; };
 		C34BCA37265CBEB800E48F65 /* MultipartProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34BCA36265CBEB800E48F65 /* MultipartProtocol.swift */; };
-		C34BCA39265CBEF400E48F65 /* URLRequestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34BCA38265CBEF400E48F65 /* URLRequestProtocol.swift */; };
-		C34BCA3B265CC3A400E48F65 /* JsonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34BCA3A265CC3A400E48F65 /* JsonProtocol.swift */; };
+		C34BCA39265CBEF400E48F65 /* MarketRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34BCA38265CBEF400E48F65 /* MarketRequestable.swift */; };
 		C37ABCB3264EAC57004AFA5C /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37ABCB2264EAC57004AFA5C /* TestError.swift */; };
 		C39DA42B264D47C0001F1B33 /* CreateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39DA42A264D47C0001F1B33 /* CreateItem.swift */; };
 		C39DA42F264D495B001F1B33 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39DA42E264D495B001F1B33 /* Item.swift */; };
@@ -66,8 +65,7 @@
 		C342120026A33AE5001E8DD0 /* ItemGridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGridCollectionViewCell.swift; sourceTree = "<group>"; };
 		C342120126A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemGridCollectionViewCell.xib; sourceTree = "<group>"; };
 		C34BCA36265CBEB800E48F65 /* MultipartProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartProtocol.swift; sourceTree = "<group>"; };
-		C34BCA38265CBEF400E48F65 /* URLRequestProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestProtocol.swift; sourceTree = "<group>"; };
-		C34BCA3A265CC3A400E48F65 /* JsonProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonProtocol.swift; sourceTree = "<group>"; };
+		C34BCA38265CBEF400E48F65 /* MarketRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRequestable.swift; sourceTree = "<group>"; };
 		C37ABCB2264EAC57004AFA5C /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
 		C39DA42A264D47C0001F1B33 /* CreateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateItem.swift; sourceTree = "<group>"; };
 		C39DA42E264D495B001F1B33 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -194,8 +192,7 @@
 				859BAB4326583D82009C2F8F /* Enum */,
 				859BAB4C26583FA0009C2F8F /* OpenMarketAPIProvider.swift */,
 				C34BCA36265CBEB800E48F65 /* MultipartProtocol.swift */,
-				C34BCA3A265CC3A400E48F65 /* JsonProtocol.swift */,
-				C34BCA38265CBEF400E48F65 /* URLRequestProtocol.swift */,
+				C34BCA38265CBEF400E48F65 /* MarketRequestable.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -399,10 +396,9 @@
 				859BAB4726583D82009C2F8F /* OpenMarketAPI.swift in Sources */,
 				859BAB4626583D82009C2F8F /* HttpMethod.swift in Sources */,
 				859BAB4D26583FA0009C2F8F /* OpenMarketAPIProvider.swift in Sources */,
-				C34BCA3B265CC3A400E48F65 /* JsonProtocol.swift in Sources */,
 				C70FB0FF25BEF61C00C9924E /* OpenMarketListViewController.swift in Sources */,
 				C70FB0FB25BEF61C00C9924E /* AppDelegate.swift in Sources */,
-				C34BCA39265CBEF400E48F65 /* URLRequestProtocol.swift in Sources */,
+				C34BCA39265CBEF400E48F65 /* MarketRequestable.swift in Sources */,
 				C3F5D657269D26DD0022D440 /* ItemListCollectionViewCell.swift in Sources */,
 				C70FB0FD25BEF61C00C9924E /* SceneDelegate.swift in Sources */,
 				C342120226A33AE5001E8DD0 /* ItemGridCollectionViewCell.swift in Sources */,
