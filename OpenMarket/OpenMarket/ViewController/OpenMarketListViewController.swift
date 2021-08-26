@@ -17,13 +17,15 @@ class OpenMarketListViewController: UIViewController {
   private var currentPage: Int = 1
   private var isPaging: Bool = false
 
+  //MARK:-Life Cycle Method
   override func viewDidLoad() {
     super.viewDidLoad()
     fetchProjectItems(page: currentPage)
     configureSegmentedControl()
     configureCollectionView()
   }
-  
+
+  //MARK:-Initialize ViewController
   private func fetchProjectItems(page: Int) {
     openMarketApiProvider.getProducts(page: page) { [weak self] result in
       switch result {
@@ -81,7 +83,41 @@ class OpenMarketListViewController: UIViewController {
 }
 
 extension OpenMarketListViewController: UICollectionViewDelegate {
+  //MARK:- UIScrollViewDelegate Method for Pagination
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let position = scrollView.contentOffset.y
+    if position > (collectionView.contentSize.height-100-scrollView.frame.size.height) {
+      guard !openMarketApiProvider.isPaginating else {
+        return
+      }
+      
+      currentPage += 1
+      fetchNextPage()
+    }
+  }
   
+  private func fetchNextPage() {
+    openMarketApiProvider.getProducts(pagination: true, page: currentPage) { [weak self] result in
+      self?.isPaging = true
+      switch result {
+      case .success(let data):
+        guard let currentCellCount = self?.openMarketItems.count else { return }
+        let decodedData = try? JSONDecoder().decode(ItemList.self, from: data)
+        guard let data = decodedData else { return }
+        self?.openMarketItems.append(contentsOf: data.items)
+        let range = currentCellCount..<data.items.count + currentCellCount
+        DispatchQueue.main.async {
+          self?.collectionView.performBatchUpdates({
+            let indexPaths = range.map{ IndexPath(item: $0, section: 0) }
+            self?.collectionView.insertItems(at: indexPaths)
+          })
+        }
+        self?.isPaging = false
+      case .failure:
+        fatalError()
+      }
+    }
+  }
 }
 
 extension OpenMarketListViewController: UICollectionViewDataSource {
@@ -130,43 +166,4 @@ extension OpenMarketListViewController: UICollectionViewDelegateFlowLayout {
 enum LayoutType {
   case list
   case grid
-}
-
-extension OpenMarketListViewController {
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let offsetY = scrollView.contentOffset.y
-    let contentHeight = scrollView.contentSize.height
-    let height = scrollView.frame.height
-    
-    if offsetY > (contentHeight - height) {
-      if isPaging == false {
-        currentPage += 1
-        print("페이지 fetch \(currentPage)")
-        fetchProjectItems(page: currentPage)
-      }
-    }
-  }
-  
-  func fetchNextPage() {
-    isPaging = true
-    openMarketApiProvider.getProducts(page: currentPage) { [weak self] result in
-      switch result {
-      case .success(let data):
-        guard let currentCellCount = self?.openMarketItems.count else { return }
-        let decodedData = try? JSONDecoder().decode(ItemList.self, from: data)
-        guard let data = decodedData else { return }
-        self?.openMarketItems.append(contentsOf: data.items)
-        let range = currentCellCount..<data.items.count + currentCellCount
-        DispatchQueue.main.async {
-          self?.collectionView.performBatchUpdates({
-            let indexPaths = range.map{ IndexPath(item: $0, section: 0) }
-            self?.collectionView.insertItems(at: indexPaths)
-          })
-        }
-        self?.isPaging = false
-      case .failure:
-        fatalError()
-      }
-    }
-  }
 }
