@@ -54,12 +54,9 @@ class OpenMarketListViewController: UIViewController {
   
   private func configureCollectionView() {
     let layout = UICollectionViewFlowLayout()
-    let width = UIScreen.main.bounds.width
-    let height = UIScreen.main.bounds.height
     layout.scrollDirection = .vertical
     layout.minimumLineSpacing = 0
     layout.minimumInteritemSpacing = 0
-    layout.itemSize = CGSize(width: width, height: height)
     collectionView.collectionViewLayout = layout
     collectionView.delegate = self
     collectionView.dataSource = self

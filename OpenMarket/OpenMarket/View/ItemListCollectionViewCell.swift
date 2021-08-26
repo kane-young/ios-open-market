@@ -22,7 +22,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
   }
   
   override func prepareForReuse() {
-    self.itemImageView.image = nil
+    self.itemImageView.image = UIImage(named: "loading")
     self.itemTitleLabel.text = nil
     self.itemDiscountedPriceLabel.isHidden = false
     self.itemDiscountedPriceLabel.text = nil

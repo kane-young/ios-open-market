@@ -21,7 +21,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Csp-vX-XnF">
                         <rect key="frame" x="0.0" y="0.0" width="706" height="240"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Unf-PT-fw8">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading" translatesAutoresizingMaskIntoConstraints="NO" id="Unf-PT-fw8">
                                 <rect key="frame" x="10" y="10" width="220" height="220"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Unf-PT-fw8" secondAttribute="height" multiplier="1:1" id="hYw-iC-vPO"/>
@@ -96,6 +96,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="loading" width="403" height="411"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -15,7 +15,7 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var itemDiscountedPriceLabel: UILabel!
   @IBOutlet weak var itemPriceLabel: UILabel!
   @IBOutlet weak var stockLabel: UILabel!
-  
+
   override func awakeFromNib() {
     self.contentView.layer.cornerRadius = 10
     self.contentView.layer.borderWidth = 1
@@ -24,7 +24,7 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
   
   override func prepareForReuse() {
     super.prepareForReuse()
-    itemImageView.image = nil
+    itemImageView.image = UIImage(named: "loading")
     itemTitleLabel.text = nil
     itemDiscountedPriceLabel.text = nil
     itemDiscountedPriceLabel.isHidden = false
