@@ -26,7 +26,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     self.itemTitleLabel.text = nil
     self.itemDiscountedPriceLabel.isHidden = false
     self.itemDiscountedPriceLabel.text = nil
-    self.itemPriceLabel.text = nil
+    self.itemPriceLabel.attributedText = nil
     self.stockLabel.text = nil
   }
   
