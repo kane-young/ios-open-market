@@ -10,6 +10,7 @@ class OpenMarketListViewController: UIViewController {
   
   @IBOutlet weak var segmentedControl: UISegmentedControl!
   @IBOutlet weak var collectionView: UICollectionView!
+  private var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
   
   private var openMarketItems: [ItemList.Item] = []
   private var layoutType: LayoutType = .list
@@ -20,6 +21,7 @@ class OpenMarketListViewController: UIViewController {
   //MARK:-Life Cycle Method
   override func viewDidLoad() {
     super.viewDidLoad()
+    configureActivityIndicator()
     fetchProjectItems(page: currentPage)
     configureSegmentedControl()
     configureCollectionView()
@@ -28,6 +30,11 @@ class OpenMarketListViewController: UIViewController {
   //MARK:-Initialize ViewController
   private func fetchProjectItems(page: Int) {
     openMarketApiProvider.getProducts(page: page) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.collectionView.isHidden = true
+        self?.activityIndicator.startAnimating()
+      }
+      
       switch result {
       case .success(let data):
         let decodedData = try? JSONDecoder().decode(ItemList.self, from: data)
@@ -36,12 +43,20 @@ class OpenMarketListViewController: UIViewController {
         }
 
         DispatchQueue.main.async {
+          self?.activityIndicator.stopAnimating()
+          self?.activityIndicator.isHidden = true
+          self?.collectionView.isHidden = false
           self?.collectionView.reloadData()
         }
       case .failure:
         fatalError()
       }
     }
+  }
+  
+  private func configureActivityIndicator() {
+    view.addSubview(activityIndicator)
+    activityIndicator.center = view.center
   }
   
   private func configureSegmentedControl() {
