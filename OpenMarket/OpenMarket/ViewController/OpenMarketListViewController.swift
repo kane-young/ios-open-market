@@ -156,9 +156,9 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
         cell.configureCellWithoutImageView(item: item)
         cell.configureImageView(image: imageFromCache)
       } else {
-        cell.configureCell(item: item) {
+        cell.configureCell(item: item) { image in
           DispatchQueue.main.async {
-            self.imageCache.setObject(cell.cacheForReuse(), forKey: keyForCache)
+            self.imageCache.setObject(image, forKey: keyForCache)
           }
         }
       }
@@ -173,9 +173,7 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
         cell.configureImageView(image: imageFromCache)
       } else {
         cell.configureCell(item: item) {
-          DispatchQueue.main.async {
             self.imageCache.setObject(cell.cacheForReuse(), forKey: keyForCache)
-          }
         }
       }
       

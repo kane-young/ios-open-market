@@ -32,7 +32,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     self.stockLabel.text = nil
   }
   
-  func configureCell(item: ItemList.Item, completion: @escaping (() -> Void)) {
+  func configureCell(item: ItemList.Item, completion: @escaping ((UIImage) -> Void)) {
     itemId = item.id
     configureThumbnail(item, completion: completion)
     configurePriceLabel(item: item)
@@ -94,7 +94,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     return "잔여수량 : " + String(stock)
   }
   
-  private func configureThumbnail(_ item: ItemList.Item, completion: @escaping (() -> Void)) {
+  private func configureThumbnail(_ item: ItemList.Item, completion: @escaping ((UIImage) -> Void)) {
     guard let firstThumbnail = item.thumbnails.first,
           let url = URL(string: firstThumbnail) else { return }
     downloadImage(url: url) { [weak self] image in
@@ -103,7 +103,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
           self?.itemImageView.image = image
         }
       }
-      completion()
+      completion(image)
     }
   }
   
