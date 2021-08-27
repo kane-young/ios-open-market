@@ -88,7 +88,7 @@ class OpenMarketAPIProviderTest: XCTestCase {
   func test_Post_Item_Success() {
     //given
     setRequestHandler(shouldSuccess: true)
-    let dummyProduct = OpenMarket.CreateItem(title: "MacBook Pro",
+    let dummyProduct = OpenMarket.ItemForCreate(title: "MacBook Pro",
                                                          descriptions: "",
                                                          price: 0,
                                                          currency: "",
@@ -117,7 +117,7 @@ class OpenMarketAPIProviderTest: XCTestCase {
   func test_Post_Item_Failure() {
     //given
     setRequestHandler(shouldSuccess: false)
-    let dummyProduct = OpenMarket.CreateItem(title: "MacBook Pro",
+    let dummyProduct = OpenMarket.ItemForCreate(title: "MacBook Pro",
                                                          descriptions: "",
                                                          price: 0,
                                                          currency: "",
@@ -146,7 +146,7 @@ class OpenMarketAPIProviderTest: XCTestCase {
   func test_Update_Item_Success() {
     //given
     setRequestHandler(shouldSuccess: true)
-    let dummyProduct = OpenMarket.UpdateItem(title: "MacBook Pro",
+    let dummyProduct = OpenMarket.ItemFormForUpdate(title: "MacBook Pro",
                                                          descriptions: "",
                                                          price: 0,
                                                          currency: "",
@@ -175,7 +175,7 @@ class OpenMarketAPIProviderTest: XCTestCase {
   func test_Update_Item_Failure() {
     //given
     setRequestHandler(shouldSuccess: false)
-    let dummyProduct = OpenMarket.UpdateItem(title: "MacBook Pro",
+    let dummyProduct = OpenMarket.ItemFormForUpdate(title: "MacBook Pro",
                                                          descriptions: "",
                                                          price: 0,
                                                          currency: "",
@@ -204,7 +204,7 @@ class OpenMarketAPIProviderTest: XCTestCase {
   func test_Delete_Item_Success() {
     //given
     setRequestHandler(shouldSuccess: true)
-    let dummyUserInfomation = OpenMarket.DeleteItem(password: "")
+    let dummyUserInfomation = OpenMarket.ItemDelete(password: "")
     
     //when
     openMarketProvider.deleteProduct(product: dummyUserInfomation,
@@ -226,7 +226,7 @@ class OpenMarketAPIProviderTest: XCTestCase {
   func test_Delete_Item_Failure() {
     //given
     setRequestHandler(shouldSuccess: false)
-    let dummyUserInfomation = OpenMarket.DeleteItem(password: "")
+    let dummyUserInfomation = OpenMarket.ItemDelete(password: "")
     
     //when
     openMarketProvider.deleteProduct(product: dummyUserInfomation,

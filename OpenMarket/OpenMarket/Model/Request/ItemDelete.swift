@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct DeleteItem: Encodable {
+struct ItemDelete: Encodable {
   let password: String
 }

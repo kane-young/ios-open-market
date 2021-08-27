@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UpdateItem: Encodable {
+struct ItemUpdate: Encodable {
   let title: String?
   let descriptions: String?
   let price: Int?
