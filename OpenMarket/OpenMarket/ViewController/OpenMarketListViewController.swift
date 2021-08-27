@@ -17,6 +17,7 @@ class OpenMarketListViewController: UIViewController {
   private let openMarketApiProvider = OpenMarketAPIProvider()
   private var currentPage: Int = 1
   private var isPaging: Bool = false
+  private let imageCache = NSCache<NSString, UIImage>()
 
   //MARK:-Life Cycle Method
   override func viewDidLoad() {
@@ -29,7 +30,8 @@ class OpenMarketListViewController: UIViewController {
 
   //MARK:-Initialize ViewController
   private func fetchProjectItems(page: Int) {
-    openMarketApiProvider.getProducts(page: page) { [weak self] result in
+    openMarketApiProvider.getProducts(pagination: true, page: page) { [weak self] result in
+      self?.openMarketApiProvider.isPaginating = true
       DispatchQueue.main.async {
         self?.collectionView.isHidden = true
         self?.activityIndicator.startAnimating()
@@ -143,18 +145,40 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
     }
     
     let item = openMarketItems[indexPath.item]
+    let keyForCache = NSString(string: String(item.id))
     switch layoutType {
     case .list:
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCollectionViewCell.identifier, for: indexPath) as? ItemListCollectionViewCell else {
         return UICollectionViewCell()
       }
-      cell.configureCell(item: item)
+      
+      if let imageFromCache = imageCache.object(forKey: keyForCache) {
+        cell.configureCellWithoutImageView(item: item)
+        cell.configureImageView(image: imageFromCache)
+      } else {
+        cell.configureCell(item: item) {
+          DispatchQueue.main.async {
+            self.imageCache.setObject(cell.cacheForReuse(), forKey: keyForCache)
+          }
+        }
+      }
+      
       return cell
     case .grid:
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemGridCollectionViewCell.identifier, for: indexPath) as? ItemGridCollectionViewCell else {
         return UICollectionViewCell()
       }
-      cell.configureCell(item: item)
+      if let imageFromCache = imageCache.object(forKey: keyForCache) {
+        cell.configureCellWithoutImageView(item: item)
+        cell.configureImageView(image: imageFromCache)
+      } else {
+        cell.configureCell(item: item) {
+          DispatchQueue.main.async {
+            self.imageCache.setObject(cell.cacheForReuse(), forKey: keyForCache)
+          }
+        }
+      }
+      
       return cell
     }
   }

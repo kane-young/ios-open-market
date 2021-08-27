@@ -30,11 +30,25 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     self.stockLabel.text = nil
   }
   
-  func configureCell(item: ItemList.Item) {
-    configureThumbnail(item)
+  func configureCell(item: ItemList.Item, completion: @escaping (() -> Void)) {
+    configureThumbnail(item, completion: completion)
     configurePriceLabel(item: item)
     stockLabel.text = checkStockCount(item.stock)
     itemTitleLabel.text = item.title
+  }
+  
+  func cacheForReuse() -> UIImage {
+    return itemImageView.image!
+  }
+  
+  func configureCellWithoutImageView(item: ItemList.Item) {
+    configurePriceLabel(item: item)
+    stockLabel.text = checkStockCount(item.stock)
+    itemTitleLabel.text = item.title
+  }
+  
+  func configureImageView(image: UIImage) {
+    itemImageView.image = image
   }
   
   private func configurePriceLabel(item: ItemList.Item) {
@@ -77,13 +91,14 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     return "잔여수량 : " + String(stock)
   }
   
-  private func configureThumbnail(_ item: ItemList.Item) {
+  private func configureThumbnail(_ item: ItemList.Item, completion: @escaping (() -> Void)) {
     guard let firstThumbnail = item.thumbnails.first,
           let url = URL(string: firstThumbnail) else { return }
     downloadImage(url: url) { [weak self] image in
       DispatchQueue.main.async {
         self?.itemImageView.image = image
       }
+      completion()
     }
   }
   
