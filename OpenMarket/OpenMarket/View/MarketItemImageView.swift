@@ -8,7 +8,6 @@
 import UIKit
 
 class MarketItemImageView: UIImageView {
-
   func loadImage(with item: ItemList.Item) {
     guard let firstThumbnail = item.thumbnails.first,
           let url = URL(string: firstThumbnail) else { return }

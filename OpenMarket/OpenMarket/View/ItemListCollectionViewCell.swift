@@ -16,6 +16,8 @@ class ItemListCollectionViewCell: UICollectionViewCell {
   @IBOutlet private weak var itemPriceLabel: UILabel!
   @IBOutlet private weak var stockLabel: UILabel!
   
+  private var itemId = 0
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     itemTitleLabel.adjustsFontSizeToFitWidth = true
@@ -31,6 +33,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
   }
   
   func configureCell(item: ItemList.Item, completion: @escaping (() -> Void)) {
+    itemId = item.id
     configureThumbnail(item, completion: completion)
     configurePriceLabel(item: item)
     stockLabel.text = checkStockCount(item.stock)
@@ -96,7 +99,9 @@ class ItemListCollectionViewCell: UICollectionViewCell {
           let url = URL(string: firstThumbnail) else { return }
     downloadImage(url: url) { [weak self] image in
       DispatchQueue.main.async {
-        self?.itemImageView.image = image
+        if self?.itemId == item.id {
+          self?.itemImageView.image = image
+        }
       }
       completion()
     }

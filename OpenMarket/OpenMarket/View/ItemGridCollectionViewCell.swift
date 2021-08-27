@@ -16,6 +16,8 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var itemPriceLabel: UILabel!
   @IBOutlet weak var stockLabel: UILabel!
 
+  private var itemId = 0
+  
   override func awakeFromNib() {
     self.contentView.layer.cornerRadius = 10
     self.contentView.layer.borderWidth = 1
@@ -33,6 +35,7 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
   }
   
   func configureCell(item: ItemList.Item, completion: @escaping (() -> Void)) {
+    itemId = item.id
     configureThumbnail(item, completion: completion)
     configurePriceLabel(item: item)
     stockLabel.text = checkStockCount(item.stock)
@@ -98,7 +101,9 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
           let url = URL(string: firstThumbnail) else { return }
     downloadImage(url: url) { [weak self] image in
       DispatchQueue.main.async {
-        self?.itemImageView.image = image
+        if self?.itemId == item.id {
+          self?.itemImageView.image = image
+        }
       }
       completion()
     }
