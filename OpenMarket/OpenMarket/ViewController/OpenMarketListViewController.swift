@@ -23,33 +23,29 @@ class OpenMarketListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureActivityIndicator()
-    fetchProjectItems(page: currentPage)
     configureSegmentedControl()
     configureCollectionView()
+    fetchProjectItems(page: currentPage)
   }
 
   //MARK:-Initialize ViewController
   private func fetchProjectItems(page: Int) {
-    openMarketApiProvider.getProducts(pagination: true, page: page) { [weak self] result in
-      self?.openMarketApiProvider.isPaginating = true
-      DispatchQueue.main.async {
-        self?.collectionView.isHidden = true
-        self?.activityIndicator.startAnimating()
-      }
-      
+    isPaging = true
+    collectionView.isHidden = true
+    activityIndicator.startAnimating()
+    openMarketApiProvider.getProducts(page: page) { [weak self] result in
       switch result {
-      case .success(let data):
-        let decodedData = try? JSONDecoder().decode(ItemList.self, from: data)
-        if let data = decodedData {
-          self?.openMarketItems.append(contentsOf: data.items)
-        }
-
+      case .success(let items):
+        self?.openMarketItems.append(contentsOf: items)
         DispatchQueue.main.async {
           self?.activityIndicator.stopAnimating()
           self?.activityIndicator.isHidden = true
           self?.collectionView.isHidden = false
           self?.collectionView.reloadData()
+          self?.isPaging = false
         }
+        
+        self?.currentPage += 1
       case .failure:
         fatalError()
       }
@@ -101,30 +97,27 @@ extension OpenMarketListViewController: UICollectionViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let position = scrollView.contentOffset.y
     if position > (collectionView.contentSize.height-100-scrollView.frame.size.height) {
-      guard !openMarketApiProvider.isPaginating else {
+      if isPaging == true {
         return
       }
-      
-      currentPage += 1
       fetchNextPage()
     }
   }
   
   private func fetchNextPage() {
-    openMarketApiProvider.getProducts(pagination: true, page: currentPage) { [weak self] result in
-      self?.isPaging = true
+    isPaging = true
+    openMarketApiProvider.getProducts(page: currentPage) { [weak self] result in
       switch result {
-      case .success(let data):
+      case .success(let items):
         guard let currentCellCount = self?.openMarketItems.count else { return }
-        let decodedData = try? JSONDecoder().decode(ItemList.self, from: data)
-        guard let data = decodedData else { return }
-        self?.openMarketItems.append(contentsOf: data.items)
-        let range = currentCellCount..<data.items.count + currentCellCount
+        self?.openMarketItems.append(contentsOf: items)
+        let range = currentCellCount..<currentCellCount + items.count
         DispatchQueue.main.async {
           self?.collectionView.performBatchUpdates({
             let indexPaths = range.map{ IndexPath(item: $0, section: 0) }
             self?.collectionView.insertItems(at: indexPaths)
           })
+          self?.currentPage += 1
         }
         self?.isPaging = false
       case .failure:
@@ -153,12 +146,12 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
       }
       
       if let imageFromCache = imageCache.object(forKey: keyForCache) {
-        cell.configureCellWithoutImageView(item: item)
+        cell.configureLabels(item: item)
         cell.configureImageView(image: imageFromCache)
       } else {
-        cell.configureCell(item: item) { image in
+        cell.configureCell(item: item) { [weak self] image in
           DispatchQueue.main.async {
-            self.imageCache.setObject(image, forKey: keyForCache)
+            self?.imageCache.setObject(image, forKey: keyForCache)
           }
         }
       }
@@ -169,11 +162,13 @@ extension OpenMarketListViewController: UICollectionViewDataSource {
         return UICollectionViewCell()
       }
       if let imageFromCache = imageCache.object(forKey: keyForCache) {
-        cell.configureCellWithoutImageView(item: item)
+        cell.configureLabels(item: item)
         cell.configureImageView(image: imageFromCache)
       } else {
-        cell.configureCell(item: item) {
-            self.imageCache.setObject(cell.cacheForReuse(), forKey: keyForCache)
+        cell.configureCell(item: item) { [weak self] image in
+          DispatchQueue.main.async {
+            self?.imageCache.setObject(image, forKey: keyForCache)
+          }
         }
       }
       

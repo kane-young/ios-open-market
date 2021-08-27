@@ -15,7 +15,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
   @IBOutlet private weak var itemDiscountedPriceLabel: UILabel!
   @IBOutlet private weak var itemPriceLabel: UILabel!
   @IBOutlet private weak var stockLabel: UILabel!
-  
+  private let openMarketAPIProvider = OpenMarketAPIProvider()
   private var itemId = 0
   
   override func awakeFromNib() {
@@ -24,29 +24,27 @@ class ItemListCollectionViewCell: UICollectionViewCell {
   }
   
   override func prepareForReuse() {
-    self.itemImageView.image = UIImage(named: "loading")
-    self.itemTitleLabel.text = nil
-    self.itemDiscountedPriceLabel.isHidden = false
-    self.itemDiscountedPriceLabel.text = nil
-    self.itemPriceLabel.attributedText = nil
-    self.stockLabel.text = nil
+    super.prepareForReuse()
+    itemImageView.image = UIImage(named: "loading")
+    itemTitleLabel.text = nil
+    itemDiscountedPriceLabel.isHidden = false
+    itemDiscountedPriceLabel.text = nil
+    itemPriceLabel.attributedText = nil
+    stockLabel.text = nil
   }
   
   func configureCell(item: ItemList.Item, completion: @escaping ((UIImage) -> Void)) {
     itemId = item.id
     configureThumbnail(item, completion: completion)
     configurePriceLabel(item: item)
-    stockLabel.text = checkStockCount(item.stock)
+    stockLabel.text = convertStockToString(item.stock)
     itemTitleLabel.text = item.title
   }
   
-  func cacheForReuse() -> UIImage {
-    return itemImageView.image!
-  }
-  
-  func configureCellWithoutImageView(item: ItemList.Item) {
+  func configureLabels(item: ItemList.Item) {
+    itemId = item.id
     configurePriceLabel(item: item)
-    stockLabel.text = checkStockCount(item.stock)
+    stockLabel.text = convertStockToString(item.stock)
     itemTitleLabel.text = item.title
   }
   
@@ -82,7 +80,7 @@ class ItemListCollectionViewCell: UICollectionViewCell {
     return currency + String.whiteSpace + money
   }
   
-  private func checkStockCount(_ stock: Int) -> String {
+  private func convertStockToString(_ stock: Int) -> String {
     if stock == .zero {
       stockLabel.textColor = .systemYellow
       return "품절"
@@ -108,9 +106,13 @@ class ItemListCollectionViewCell: UICollectionViewCell {
   }
   
   private func downloadImage(url: URL, completionHandler: @escaping (UIImage) -> Void) {
-    URLSession.shared.dataTask(with: url) { data, response, error in
-      guard let data = data, let image = UIImage(data: data) else { return }
-      completionHandler(image)
-    }.resume()
+    openMarketAPIProvider.downloadImage(url: url) { result in
+      switch result {
+      case .success(let image):
+        completionHandler(image)
+      case .failure(_):
+        return
+      }
+    }
   }
 }

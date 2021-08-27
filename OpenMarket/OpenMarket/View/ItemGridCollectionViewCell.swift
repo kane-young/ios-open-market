@@ -10,15 +10,16 @@ import UIKit
 class ItemGridCollectionViewCell: UICollectionViewCell {
   static let identifier: String = "ItemGridCollectionViewCell"
   
-  @IBOutlet weak var itemImageView: UIImageView!
-  @IBOutlet weak var itemTitleLabel: UILabel!
-  @IBOutlet weak var itemDiscountedPriceLabel: UILabel!
-  @IBOutlet weak var itemPriceLabel: UILabel!
-  @IBOutlet weak var stockLabel: UILabel!
-
+  @IBOutlet private weak var itemImageView: UIImageView!
+  @IBOutlet private weak var itemTitleLabel: UILabel!
+  @IBOutlet private weak var itemDiscountedPriceLabel: UILabel!
+  @IBOutlet private weak var itemPriceLabel: UILabel!
+  @IBOutlet private weak var stockLabel: UILabel!
+  private let openMarketAPIProvider = OpenMarketAPIProvider()
   private var itemId = 0
   
   override func awakeFromNib() {
+    super.awakeFromNib()
     self.contentView.layer.cornerRadius = 10
     self.contentView.layer.borderWidth = 1
     itemTitleLabel.adjustsFontSizeToFitWidth = true
@@ -34,28 +35,25 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
     stockLabel.text = nil
   }
   
-  func configureCell(item: ItemList.Item, completion: @escaping (() -> Void)) {
+  func configureCell(item: ItemList.Item, completion: @escaping ((UIImage) -> Void)) {
     itemId = item.id
     configureThumbnail(item, completion: completion)
     configurePriceLabel(item: item)
-    stockLabel.text = checkStockCount(item.stock)
+    stockLabel.text = convertStockToString(item.stock)
     itemTitleLabel.text = item.title
   }
   
-  func cacheForReuse() -> UIImage {
-    return itemImageView.image!
-  }
-  
-  func configureCellWithoutImageView(item: ItemList.Item) {
+  func configureLabels(item: ItemList.Item) {
+    itemId = item.id
     configurePriceLabel(item: item)
-    stockLabel.text = checkStockCount(item.stock)
+    stockLabel.text = convertStockToString(item.stock)
     itemTitleLabel.text = item.title
   }
-  
+
   func configureImageView(image: UIImage) {
     itemImageView.image = image
   }
-  
+
   private func configurePriceLabel(item: ItemList.Item) {
     guard let itemPrice = convertIntToPrice(item.currency, item.price) else { return }
     if let discountedPrice = item.discountedPrice {
@@ -84,7 +82,7 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
     return currency + String.whiteSpace + money
   }
   
-  private func checkStockCount(_ stock: Int) -> String {
+  private func convertStockToString(_ stock: Int) -> String {
     if stock == .zero {
       stockLabel.textColor = .systemYellow
       return "품절"
@@ -96,7 +94,7 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
     return "잔여수량 : " + String(stock)
   }
   
-  private func configureThumbnail(_ item: ItemList.Item, completion: @escaping (() -> Void)) {
+  private func configureThumbnail(_ item: ItemList.Item, completion: @escaping ((UIImage) -> Void)) {
     guard let firstThumbnail = item.thumbnails.first,
           let url = URL(string: firstThumbnail) else { return }
     downloadImage(url: url) { [weak self] image in
@@ -105,14 +103,18 @@ class ItemGridCollectionViewCell: UICollectionViewCell {
           self?.itemImageView.image = image
         }
       }
-      completion()
+      completion(image)
     }
   }
   
   private func downloadImage(url: URL, completionHandler: @escaping (UIImage) -> Void) {
-    URLSession.shared.dataTask(with: url) { data, response, error in
-      guard let data = data, let image = UIImage(data: data) else { return }
-      completionHandler(image)
-    }.resume()
+    openMarketAPIProvider.downloadImage(url: url) { result in
+      switch result {
+      case .success(let image):
+        completionHandler(image)
+      case .failure(_):
+        return
+      }
+    }
   }
 }

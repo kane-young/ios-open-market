@@ -10,8 +10,6 @@ import Foundation
 protocol MultiPartProtocol {
   static var boundary: String { get }
   func createMultiPartBody<T: Encodable>(with item: T) -> Data
-  func convertMultiPartForm(imageName: String, images: [Data], boundary: String) -> Data
-  func convertMultiPartForm(name: String, value: Any, boundary: String) -> Data
 }
 
 extension MultiPartProtocol {
@@ -32,7 +30,7 @@ extension MultiPartProtocol {
     return data
   }
 
-  func convertMultiPartForm(imageName: String, images: [Data], boundary: String) -> Data {
+  private func convertMultiPartForm(imageName: String, images: [Data], boundary: String) -> Data {
     var data = Data()
     
     for image in images {
@@ -46,7 +44,7 @@ extension MultiPartProtocol {
     return data
   }
 
-  func convertMultiPartForm(name: String, value: Any, boundary: String) -> Data {
+  private func convertMultiPartForm(name: String, value: Any, boundary: String) -> Data {
     var data = Data()
     
     data.appendString("--\(boundary)\r\n")
