@@ -9,14 +9,16 @@ import XCTest
 @testable import OpenMarket
 
 class OpenMarketAPIProviderTest: XCTestCase {
-  var openMarketProvider: OpenMarketAPIProvider!
-  var expectation: XCTestExpectation!
+  private var openMarketProvider: OpenMarketAPIProvider!
+  private var expectation: XCTestExpectation!
+  private let dummyItemCreate: OpenMarket.ItemCreate = OpenMarket.ItemCreate(title: "아이템",descriptions: "설명", price: 1000,currency: "KRW", stock: 100, discountedPrice: 400,images: [Data()], password: "123")
+  private let dummyItemUpdate: OpenMarket.ItemUpdate = OpenMarket.ItemUpdate(title: "아이템", descriptions: "설명", price: 1000, currency: "KRW", stock: 100, discountedPrice: 400, images: [Data()], password: "123")
+  private let dummyItemDelete: OpenMarket.ItemDelete = OpenMarket.ItemDelete(password: "123")
   
   override func setUpWithError() throws {
     let configuration = URLSessionConfiguration.default
-    configuration.protocolClasses = [MockURLProtocol.self]
-    let urlSession = URLSession.init(configuration: configuration)
-    
+    configuration.protocolClasses = [MockURLSession.self]
+    let urlSession = URLSession(configuration: configuration)
     openMarketProvider = OpenMarketAPIProvider(session: urlSession)
     expectation = XCTestExpectation()
   }
@@ -25,254 +27,104 @@ class OpenMarketAPIProviderTest: XCTestCase {
     openMarketProvider = nil
     expectation = nil
   }
-  
-  //MARK: Test Function
-  func test_url_validity_check() {
-    MockURLProtocol.requestHandler = { request in
-      if request.url == nil {
-        XCTFail("유효하지 않는 url")
-        fatalError()
-      }
-      XCTAssert(true)
-      
-      return (nil, nil, nil)
-    }
-  }
-  
-  func test_mockData_validity_check() {
-    if NSDataAsset(name: "Item") != nil {
-      XCTAssert(true)
+
+  func test_when_아이템생성시_then_error_notNil_connectionProblem에러발생() {
+    //given
+    guard let dummyURL: URL = URL(string: "www.google.com") else {
+      XCTFail()
       return
     }
-    XCTFail("파일 존재x")
-  }
-  
-  func test_Get_Item_Success() {
-    //given
-    setRequestHandler(shouldSuccess: true)
-    //when
-    openMarketProvider.getData(apiRequestType: .loadProduct(id: 1), completionHandler: { result in
-      
-      switch result {
-      //then
-      case .success:
-        XCTAssert(true)
-      case .failure:
-        XCTFail()
-      }
-      self.expectation.fulfill()
-    })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  func test_Get_Item_Failure() {
-    //given
-    setRequestHandler(shouldSuccess: false)
-    
-    //when
-    openMarketProvider.getData(apiRequestType: .loadProduct(id: 1), completionHandler: { result in
-      switch result {
-      //then
-      case .success:
-        XCTFail()
-      case .failure:
-        XCTAssert(true)
-      }
-      self.expectation.fulfill()
-    })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  func test_Post_Item_Success() {
-    //given
-    setRequestHandler(shouldSuccess: true)
-    let dummyProduct = OpenMarket.ItemForCreate(title: "MacBook Pro",
-                                                         descriptions: "",
-                                                         price: 0,
-                                                         currency: "",
-                                                         stock: 0,
-                                                         discountedPrice: 0,
-                                                         images: [],
-                                                         password: "")
-    
-    //when
-    openMarketProvider.postProduct(product: dummyProduct,
-                                   apiRequestType: .postProduct,
-                                   completionHandler: { result in
-                                    //then
-                                    switch result {
-                                    case .success:
-                                      XCTAssert(true)
-                                    case .failure:
-                                      XCTFail()
-                                    }
-                                    self.expectation.fulfill()
-                                   })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  func test_Post_Item_Failure() {
-    //given
-    setRequestHandler(shouldSuccess: false)
-    let dummyProduct = OpenMarket.ItemForCreate(title: "MacBook Pro",
-                                                         descriptions: "",
-                                                         price: 0,
-                                                         currency: "",
-                                                         stock: 0,
-                                                         discountedPrice: 0,
-                                                         images: [],
-                                                         password: "")
-    
-    //when
-    openMarketProvider.postProduct(product: dummyProduct,
-                                   apiRequestType: .postProduct,
-                                   completionHandler: { result in
-                                    switch result {
-                                    //then
-                                    case .success:
-                                      XCTFail()
-                                    case .failure:
-                                      XCTAssert(true)
-                                    }
-                                    self.expectation.fulfill()
-                                   })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  func test_Update_Item_Success() {
-    //given
-    setRequestHandler(shouldSuccess: true)
-    let dummyProduct = OpenMarket.ItemFormForUpdate(title: "MacBook Pro",
-                                                         descriptions: "",
-                                                         price: 0,
-                                                         currency: "",
-                                                         stock: 0,
-                                                         discountedPrice: 0,
-                                                         images: [],
-                                                         password: "")
-    
-    //when
-    openMarketProvider.updateProduct(product: dummyProduct,
-                                     apiRequestType: .patchProduct(id: 1),
-                                     completionHandler: { result in
-                                      //then
-                                      switch result {
-                                      case .success:
-                                        XCTAssert(true)
-                                      case .failure:
-                                        XCTFail()
-                                      }
-                                      self.expectation.fulfill()
-                                     })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  func test_Update_Item_Failure() {
-    //given
-    setRequestHandler(shouldSuccess: false)
-    let dummyProduct = OpenMarket.ItemFormForUpdate(title: "MacBook Pro",
-                                                         descriptions: "",
-                                                         price: 0,
-                                                         currency: "",
-                                                         stock: 0,
-                                                         discountedPrice: 0,
-                                                         images: [],
-                                                         password: "")
-    
-    //when
-    openMarketProvider.updateProduct(product: dummyProduct,
-                                     apiRequestType: .patchProduct(id: 1),
-                                     completionHandler: { result in
-                                      switch result {
-                                      //then
-                                      case .success:
-                                        XCTFail()
-                                      case .failure:
-                                        XCTAssert(true)
-                                      }
-                                      self.expectation.fulfill()
-                                     })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  func test_Delete_Item_Success() {
-    //given
-    setRequestHandler(shouldSuccess: true)
-    let dummyUserInfomation = OpenMarket.ItemDelete(password: "")
-    
-    //when
-    openMarketProvider.deleteProduct(product: dummyUserInfomation,
-                                     apiRequestType: .deleteProduct(id: 1),
-                                     completionHandler: { result in
-                                      switch result {
-                                      //then
-                                      case .success:
-                                        XCTAssert(true)
-                                      case .failure:
-                                        XCTFail()
-                                      }
-                                      self.expectation.fulfill()
-                                     })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  func test_Delete_Item_Failure() {
-    //given
-    setRequestHandler(shouldSuccess: false)
-    let dummyUserInfomation = OpenMarket.ItemDelete(password: "")
-    
-    //when
-    openMarketProvider.deleteProduct(product: dummyUserInfomation,
-                                     apiRequestType: .deleteProduct(id: 1),
-                                     completionHandler: { result in
-                                      switch result {
-                                      //then
-                                      case .success:
-                                        XCTFail()
-                                      case .failure:
-                                        XCTAssert(true)
-                                      }
-                                      self.expectation.fulfill()
-                                     })
-    
-    wait(for: [expectation], timeout: 5)
-  }
-  
-  //MARK: Set Request Configuration
-  private func setRequestHandler(shouldSuccess: Bool) {
-    MockURLProtocol.requestHandler = { request in
-      guard let url = request.url else {
-        fatalError()
-      }
-
-      XCTAssertEqual(url.absoluteString.contains(RequestType.baseURL), true)
-      
-      let response: HTTPURLResponse?
-      if shouldSuccess {
-        response = HTTPURLResponse(url: url,
-                                       statusCode: 200,
-                                       httpVersion: nil,
-                                       headerFields: nil)
-      } else {
-        response = HTTPURLResponse(url: url,
-                                       statusCode: 404,
-                                       httpVersion: nil,
-                                       headerFields: nil)
-      }
-      
-      guard let asset = NSDataAsset(name: "Item") else {
-        fatalError()
-      }
-      let data = asset.data
-      
-      return (response, data, nil)
+    MockURLSession.requestHandler = { _ in
+      let response = HTTPURLResponse(url: dummyURL, statusCode: 200, httpVersion: nil, headerFields: nil)
+      return (response, Data(), OpenMarketError.connectionProblem)
     }
+    //when
+    openMarketProvider.postProduct(item: dummyItemCreate) { [weak self] result in
+      switch result {
+      case .success(_):
+        XCTFail()
+      case .failure(let error):
+        //then
+        XCTAssertEqual(error, .connectionProblem)
+        self?.expectation.fulfill()
+      }
+    }
+    wait(for: [expectation], timeout: 2.0)
+  }
+
+  func test_when_아이템수정시_statusCode가200번대가아닐경우_then_invalidResponse에러발생() {
+    //given
+    guard let dummyURL: URL = URL(string: "www.google.com") else {
+      XCTFail()
+      return
+    }
+    MockURLSession.requestHandler = { _ in
+      let response = HTTPURLResponse(url: dummyURL, statusCode: 400, httpVersion: nil, headerFields: nil)
+      return (response, Data(), nil)
+    }
+    //when
+    openMarketProvider.updateProduct(id: 12, to: dummyItemUpdate) { [weak self] result in
+      switch result {
+      case .success(_):
+        XCTFail()
+      case .failure(let error):
+        //then
+        XCTAssertEqual(error, .invalidResponse)
+        self?.expectation.fulfill()
+      }
+    }
+    wait(for: [expectation], timeout: 2.0)
+  }
+  
+  func test_when_아이템삭제시_data가nil일경우_then_invalidData에러발생() {
+    //given
+    guard let dummyURL: URL = URL(string: "www.google.com") else {
+      XCTFail()
+      return
+    }
+    MockURLSession.requestHandler = { _ in
+      let response = HTTPURLResponse(url: dummyURL, statusCode: 200, httpVersion: nil, headerFields: nil)
+      return (response, nil, nil)
+    }
+    //when
+    openMarketProvider.deleteProduct(id: 10, with: dummyItemDelete) { [weak self] result in
+      switch result {
+      case .success(_):
+        XCTFail()
+      case .failure(let error):
+        //then
+        XCTAssertEqual(error, OpenMarketError.invalidData)
+        self?.expectation.fulfill()
+      }
+    }
+    wait(for: [expectation], timeout: 2.0)
+  }
+
+  func test_when_아이템생성성공_then_data반환() {
+    //given
+    guard let dummyURL: URL = URL(string: "www.google.com") else {
+      XCTFail()
+      return
+    }
+    guard let mockData = try? JSONEncoder().encode(dummyItemCreate) else {
+      XCTFail()
+      return
+    }
+    MockURLSession.requestHandler = { _ in
+      let response = HTTPURLResponse(url: dummyURL, statusCode: 200, httpVersion: nil, headerFields: nil)
+      return (response, mockData, nil)
+    }
+    //when
+    openMarketProvider.postProduct(item: dummyItemCreate) { [weak self] result in
+      switch result {
+      case .success(let data):
+        //then
+        XCTAssertEqual(data, mockData)
+        self?.expectation.fulfill()
+      case .failure(_):
+        XCTFail()
+      }
+    }
+    wait(for: [expectation], timeout: 2.0)
   }
 }

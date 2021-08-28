@@ -13,7 +13,7 @@
 		859BAB4726583D82009C2F8F /* OpenMarketAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4526583D82009C2F8F /* OpenMarketAPI.swift */; };
 		859BAB4D26583FA0009C2F8F /* OpenMarketAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4C26583FA0009C2F8F /* OpenMarketAPIProvider.swift */; };
 		859BAB5026583FCC009C2F8F /* Extension+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB4F26583FCC009C2F8F /* Extension+Data.swift */; };
-		859BAB60265846FD009C2F8F /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB5F265846FD009C2F8F /* MockURLProtocol.swift */; };
+		859BAB60265846FD009C2F8F /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB5F265846FD009C2F8F /* MockURLSession.swift */; };
 		859BAB62265847CB009C2F8F /* OpenMarketAPIProviderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BAB61265847CB009C2F8F /* OpenMarketAPIProviderTest.swift */; };
 		C342120226A33AE5001E8DD0 /* ItemGridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C342120026A33AE5001E8DD0 /* ItemGridCollectionViewCell.swift */; };
 		C342120326A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C342120126A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib */; };
@@ -59,7 +59,7 @@
 		859BAB4526583D82009C2F8F /* OpenMarketAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenMarketAPI.swift; sourceTree = "<group>"; };
 		859BAB4C26583FA0009C2F8F /* OpenMarketAPIProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenMarketAPIProvider.swift; path = OpenMarket/Network/OpenMarketAPIProvider.swift; sourceTree = SOURCE_ROOT; };
 		859BAB4F26583FCC009C2F8F /* Extension+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+Data.swift"; sourceTree = "<group>"; };
-		859BAB5F265846FD009C2F8F /* MockURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		859BAB5F265846FD009C2F8F /* MockURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
 		859BAB61265847CB009C2F8F /* OpenMarketAPIProviderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenMarketAPIProviderTest.swift; sourceTree = "<group>"; };
 		C342120026A33AE5001E8DD0 /* ItemGridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGridCollectionViewCell.swift; sourceTree = "<group>"; };
 		C342120126A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemGridCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -188,7 +188,7 @@
 		C37ABCB8264EAFE2004AFA5C /* Mock */ = {
 			isa = PBXGroup;
 			children = (
-				859BAB5F265846FD009C2F8F /* MockURLProtocol.swift */,
+				859BAB5F265846FD009C2F8F /* MockURLSession.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -368,7 +368,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C39DA44E264E5032001F1B33 /* Item.swift in Sources */,
-				859BAB60265846FD009C2F8F /* MockURLProtocol.swift in Sources */,
+				859BAB60265846FD009C2F8F /* MockURLSession.swift in Sources */,
 				C39DA459264E5047001F1B33 /* ItemUpdate.swift in Sources */,
 				C39DA457264E5047001F1B33 /* ItemCreate.swift in Sources */,
 				C39DA458264E5047001F1B33 /* ItemDelete.swift in Sources */,

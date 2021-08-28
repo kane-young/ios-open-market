@@ -18,7 +18,7 @@ class OpenMarketAPIProvider: MarketRequestable {
   private func dataTask(with urlRequest: URLRequest,
                         completionHandler: @escaping (Result<Data, OpenMarketError>) -> ()) {
     session.dataTask(with: urlRequest, completionHandler: { data, response, error in
-      guard error == nil else {
+      if error != nil {
         completionHandler(.failure(.connectionProblem))
         return
       }
@@ -29,7 +29,7 @@ class OpenMarketAPIProvider: MarketRequestable {
         return
       }
       
-      guard let data = data else {
+      guard let data = data, data.isEmpty != true else {
         completionHandler(.failure(.invalidData))
         return
       }
