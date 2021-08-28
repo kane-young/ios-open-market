@@ -19,7 +19,6 @@
 		C342120326A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C342120126A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib */; };
 		C34BCA37265CBEB800E48F65 /* MultipartProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34BCA36265CBEB800E48F65 /* MultipartProtocol.swift */; };
 		C34BCA39265CBEF400E48F65 /* MarketRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34BCA38265CBEF400E48F65 /* MarketRequestable.swift */; };
-		C37ABCB3264EAC57004AFA5C /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37ABCB2264EAC57004AFA5C /* TestError.swift */; };
 		C39DA42B264D47C0001F1B33 /* ItemCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39DA42A264D47C0001F1B33 /* ItemCreate.swift */; };
 		C39DA42F264D495B001F1B33 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39DA42E264D495B001F1B33 /* Item.swift */; };
 		C39DA431264D4A5F001F1B33 /* ItemDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39DA430264D4A5F001F1B33 /* ItemDelete.swift */; };
@@ -65,7 +64,6 @@
 		C342120126A33AE5001E8DD0 /* ItemGridCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemGridCollectionViewCell.xib; sourceTree = "<group>"; };
 		C34BCA36265CBEB800E48F65 /* MultipartProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartProtocol.swift; sourceTree = "<group>"; };
 		C34BCA38265CBEF400E48F65 /* MarketRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRequestable.swift; sourceTree = "<group>"; };
-		C37ABCB2264EAC57004AFA5C /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
 		C39DA42A264D47C0001F1B33 /* ItemCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCreate.swift; sourceTree = "<group>"; };
 		C39DA42E264D495B001F1B33 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		C39DA430264D4A5F001F1B33 /* ItemDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDelete.swift; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 				C37ABCB8264EAFE2004AFA5C /* Mock */,
 				850A4702264E33B5006DC488 /* Info.plist */,
 				859BAB61265847CB009C2F8F /* OpenMarketAPIProviderTest.swift */,
-				C37ABCB2264EAC57004AFA5C /* TestError.swift */,
 			);
 			path = OpenMarketTest;
 			sourceTree = "<group>";
@@ -373,7 +370,6 @@
 				C39DA457264E5047001F1B33 /* ItemCreate.swift in Sources */,
 				C39DA458264E5047001F1B33 /* ItemDelete.swift in Sources */,
 				859BAB62265847CB009C2F8F /* OpenMarketAPIProviderTest.swift in Sources */,
-				C37ABCB3264EAC57004AFA5C /* TestError.swift in Sources */,
 				C39DA44C264E502B001F1B33 /* ItemList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
